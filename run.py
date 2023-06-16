@@ -14,11 +14,19 @@ SHEET = GSPREAD_CLIENT.open('RSVP_Responses')
 
 
 def responses_total():
-    responses = len(SHEET.worksheet('Responses').col_values(1)[1:])
+    """
+    Calculate the total number of rows of data in the worksheet.
+    """
+    total_rows = len(SHEET.worksheet('Responses').col_values(4)[1:])
+    blank_rows = SHEET.worksheet('Responses').col_values(4).count("")
+    responses = total_rows - blank_rows
     print(f'The invitation received a total of {responses} responses.')
 
 
 def analysis():
+    """
+    Run all analysis functions.
+    """
     responses_total()
 
 
