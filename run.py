@@ -12,8 +12,14 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('RSVP_Responses')
 
-responses = SHEET.worksheet('Responses')
 
-data = responses.get_all_values()
+def responses_total():
+    responses = len(SHEET.worksheet('Responses').col_values(1)[1:])
+    print(f'The invitation received a total of {responses} responses.')
 
-print(data)
+
+def analysis():
+    responses_total()
+
+
+analysis()
