@@ -36,13 +36,23 @@ def question_responses(col):
         print(f"{answer} = {answer_percent}%")
 
 
+def calc_attendance_number():
+    attendance_answers = responses_worksheet.col_values(5)[1:]
+    while "" in attendance_answers:
+        attendance_answers.remove("")
+    attendance_int = [int(answer) for answer in attendance_answers]
+    total = sum(attendance_int)
+    print(f"There are a total of {total} expected attendees.")
+
+
 def analysis():
     """
     Run all analysis functions.
     """
     responses_total = responses_total_calc(1)
-    print(f'The invitation received a total of {responses_total} responses.')
+    print(f'The invitation received a total of {responses_total} responses.\n')
     question_responses(4)
+    calc_attendance_number()
     question_responses(6)
 
 
