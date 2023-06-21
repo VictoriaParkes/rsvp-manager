@@ -13,6 +13,46 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('RSVP_Responses').worksheet('Responses')
 
 
+def main_menu():
+    """
+    Main menu
+    """
+    print('Main Menu\n')
+    print('1. RSVP Response Data Analysis')
+    print('2. Question/Comment Manager\n')
+    print("Select an option by entering 1 or 2\n")
+    
+    while True:
+        selection = input("Enter your choice here and press enter to continue:\n")
+        if validate_menu_selection(selection):
+            if selection == '1':
+                analysis()
+            elif selection == '2':
+                print('manage questions')
+            break
+
+
+def validate_menu_selection(selection):
+    """
+    REWRITE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    Inside the try, converts all string values into integers.
+    Raises ValueError if strings cannot be converted into int,
+    or if there aren't exactly 6 values.
+    REWRITE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    """
+    try:
+        selection = int(selection)
+        if selection > 2:
+            raise ValueError(
+                f"Please enter 1 or 2, you entered {selection}"
+            )
+    except ValueError as e:
+        print(f"Invalid data: {e}, please try again.\n")
+        return False
+
+    return True
+
+
 def responses_total_calc(col):
     """
     Calculate the total number of rows of data in the worksheet.
@@ -25,7 +65,8 @@ def responses_total_calc(col):
 
 def question_responses(col):
     possible_answers = set((SHEET.col_values(col)[1:]))
-    possible_answers.remove("")
+    while "" in possible_answers:
+        possible_answers.remove("")
     all_column_values = list((SHEET.col_values(col)[1:]))
     total_responses = responses_total_calc(col)
     for answer in possible_answers:
@@ -53,4 +94,5 @@ def analysis():
     question_responses(6)
 
 
-analysis()
+print('Welcome to the RSVP Response Manager.\n')
+main_menu()
