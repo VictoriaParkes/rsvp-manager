@@ -29,7 +29,7 @@ def main_menu():
             if selection == '1':
                 analysis()
             elif selection == '2':
-                print('manage questions')
+                question_manager()
             break
 
 
@@ -211,8 +211,10 @@ def view_questions(data):
         main_menu()
 
 
-# print('Welcome to the RSVP Response Manager.\n')
-# main_menu()
+def question_manager():
+    question_rows = question_asked()
+    view_questions(question_rows)
 
-question_rows = question_asked()
-view_questions(question_rows)
+
+print('Welcome to the RSVP Response Manager.\n')
+main_menu()
