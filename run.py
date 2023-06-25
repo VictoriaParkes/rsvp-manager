@@ -101,19 +101,28 @@ def email_response():
     print('email response')
 
 
-def ignore_question():
-    print('ignore')
+def ignore_question(row_data):
+    print('Are you sure you want to process this question as "ignored"?')
+    ignore = input('Enter Y or N and press enter to continue:').strip()
+    while True:
+        if ignore == 'Y' or 'y':
+            row_num = row_data['row']
+            SHEET.update_cell(row_num, 8, 'Ignored')
+        elif ignore == 'N' or 'n':
+            print('Returning to question/comment processing menu')
+            question_processing_menu(row_data)
+        break
 
 
 def skip_question():
     print('skip')
 
 
-def input_required():
+def question_processing_menu(row):
     print(
-            "Review the question/comment recieved "
-            "and choose an appropriate action\n"
-        )
+        "Review the question/comment recieved "
+        "and choose an appropriate action\n"
+    )
     print("To respond to the question/comment enter 1")
     print("To mark the question/comment as ignored enter 2")
     print(
@@ -129,7 +138,7 @@ def input_required():
             if action_selection == '1':
                 email_response()
             elif action_selection == '2':
-                ignore_question()
+                ignore_question(row)
             elif action_selection == '3':
                 skip_question()
             elif action_selection == '4':
@@ -203,7 +212,7 @@ def view_questions(data):
             for key in top_of_list:
                 print(f"{key}: {top_of_list[key]}")
             print('\n')
-            input_required()
+            question_processing_menu(row)
         print('No more questions.')
         print('You have reached the end of the list.')
         input("Press the Enter key to return to the main menu.")
