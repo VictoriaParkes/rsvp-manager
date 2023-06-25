@@ -93,6 +93,8 @@ def analysis():
     question_responses(4)
     calc_attendance_number()
     question_responses(6)
+    input("Press the Enter key to return to the main menu.")
+    main_menu()
 
 
 def email_response():
@@ -204,10 +206,10 @@ def view_questions(data):
             input_required()
         print('No more questions.')
         print('You have reached the end of the list.')
-        input("Press the Enter key to return to the main menu: ")
+        input("Press the Enter key to return to the main menu.")
     else:
         print('There are currently no questions/comments to review.')
-        input("Press the Enter key to return to the main menu: ")
+        input("Press the Enter key to return to the main menu.")
         main_menu()
 
 
