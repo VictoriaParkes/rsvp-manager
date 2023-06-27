@@ -1,6 +1,11 @@
 import gspread
-import itertools
 from google.oauth2.service_account import Credentials
+import itertools
+import configparser
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -12,6 +17,8 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('RSVP_Responses').worksheet('Responses')
+CONFIG = configparser.ConfigParser()
+CONFIG.read("config.ini")
 
 
 def main_menu():
@@ -99,11 +106,15 @@ def analysis():
 
 def compose_email_instructions():
     print('Instruction')
-    print('Enter the main body of your message in the input field, the greeting and sign off are automatically added.')
+    print('Enter the main body of your message in the input field, '
+          'the greeting and sign off are automatically added.')
     print('- Press the enter key to submit each line and start a new line.')
-    print('- Type "delete last line" and press enter to delete the last line entered and continue composing the message.')
-    print('- Type "delete message" and press enter to delete the whole message and start again.')
-    print('- Type "end message" and press enter to finish composing the message.\n')
+    print('- Type "delete last line" and press enter to delete the last '
+          'line entered and continue composing the message.')
+    print('- Type "delete message" and press enter to delete the whole '
+          'message and start again.')
+    print('- Type "end message" and press enter to finish composing the '
+          'message.\n')
 
 
 def update_email_composition(name, greeting, comment_question, input_list):
@@ -131,17 +142,24 @@ def compose_email_message(row_data):
     while True:
         user_input = input().strip()
         if user_input.lower() == 'end message':
-            # add greeting and sign off, review question and confirm message complete y/n
+            # add greeting and sign off, review question
+            # confirm message complete y/n
             print('\033c')
             break
         elif user_input == '':
             input_list.append('\n')
         elif user_input.lower() == 'delete last line':
             del input_list[-1]
-            update_email_composition(name, greeting, comment_question, input_list)
+            update_email_composition(name,
+                                     greeting,
+                                     comment_question,
+                                     input_list)
         elif user_input.lower() == 'delete message':
             input_list.clear()
-            update_email_composition(name, greeting, comment_question, input_list)
+            update_email_composition(name,
+                                     greeting,
+                                     comment_question,
+                                     input_list)
         else:
             input_list.append(user_input + '\n')
     input_list.insert(0, greeting + '\n')
@@ -151,10 +169,46 @@ def compose_email_message(row_data):
     return message
 
 
+def send_email(row_data, message):
+    def sendMailUsingSendGrid(API,
+                              from_email,
+                              to_emails,
+                              subject,
+                              html_content):
+        if (
+            API is not None
+            and from_email is not None
+            and to_emails is not None
+        ):
+            message = Mail(from_email, to_emails, subject, html_content)
+            try:
+                sg = SendGridAPIClient(API)
+                response = sg.send(message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
+            except Exception as e:
+                print(e)
+
+    try:
+        settings = CONFIG["SETTINGS"]
+    except Exception:
+        settings = {}
+
+    # variables
+    API = settings.get("APIKEY", None)
+    from_email = settings.get("FROM", None)
+    to_emails = row_data['Email address']
+
+    subject = "RSVP Question/Comment Response"
+    html_content = message
+
+    sendMailUsingSendGrid(API, from_email, to_emails, subject, html_content)
+
+
 def email_response(row_data):
     message = compose_email_message(row_data)
-
-    print(message)
+    send_email(row_data, message)
 
 
 def ignore_question(row_data):
