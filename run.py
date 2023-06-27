@@ -3,6 +3,7 @@ from google.oauth2.service_account import Credentials
 import itertools
 import configparser
 import datetime
+import time
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import ssl
@@ -22,6 +23,23 @@ CONFIG = configparser.ConfigParser()
 CONFIG.read("config.ini")
 
 
+def clear():
+    """
+    Clear the screen
+    """
+    print('\033c')
+
+
+def pause():
+    """
+    Pause the program
+    """
+    time.sleep(2)
+
+
+# def transition_between_screens():
+
+
 def main_menu():
     """
     Main menu
@@ -35,8 +53,16 @@ def main_menu():
                           " and press enter to continue:\n")
         if validate_menu_selection(selection):
             if selection == '1':
+                clear()
+                print('Analysing data...')
+                pause()
+                clear()
                 analysis()
             elif selection == '2':
+                clear()
+                print('Opening Question/Comment Manager...')
+                pause()
+                clear()
                 question_manager()
             break
 
@@ -58,7 +84,6 @@ def validate_menu_selection(selection):
     except ValueError as e:
         print(f"Invalid data: {e}, please try again.\n")
         return False
-
     return True
 
 
@@ -102,13 +127,17 @@ def analysis():
     calc_attendance_number()
     question_responses(6)
     input("Press the Enter key to return to the main menu.")
+    clear()
+    print('Returning to main menu...')
+    pause()
+    clear()
     main_menu()
 
 
 def compose_email_instructions():
-    print('Instruction')
-    print('Enter the main body of your message in the input field, '
-          'the greeting and sign off are automatically added.')
+    print('Instructions')
+    print('- Enter the main body of your message into the terminal, '
+          'the greeting and sign off are automatically added for you.')
     print('- Press the enter key to submit each line and start a new line.')
     print('- Type "delete last line" and press enter to delete the last '
           'line entered and continue composing the message.')
@@ -119,9 +148,9 @@ def compose_email_instructions():
 
 
 def update_email_composition(name, greeting, comment_question, input_list):
-    print('\033c')
+    clear()
     compose_email_instructions()
-    print(f'The comment/question left by {name} was:')
+    print(f'The question/comment left by {name} was:')
     print(comment_question)
     print(greeting)
     print(''.join(input_list))
@@ -134,9 +163,9 @@ def compose_email_message(row_data):
     comment_question = row_data['Comments/questions']
     greeting = f'Hi {name},\n'
     sign_off = '\nKind regards,\nRSVP Team'
-    print(f'Compose email message to {name} at {email_address}')
+    print(f'Compose email message to {name} at {email_address}\n')
     compose_email_instructions()
-    print(f'The comment/question left by {name} was:')
+    print(f'The question/comment left by {name} was:')
     print(f'{comment_question}\n')
     input_list = []
     print(greeting)
@@ -161,12 +190,17 @@ def compose_email_message(row_data):
                                      greeting,
                                      comment_question,
                                      input_list)
+        elif user_input.lower() == 'exit':
+            clear()
+            print('Returing to question/comment processing menu...')
+            pause()
+            clear()
+            question_processing_menu(row_data)
         else:
             input_list.append(user_input + '\n')
     input_list.insert(0, greeting + '\n')
     input_list.append(sign_off)
     message = ''.join(input_list)
-
     return message
 
 
@@ -175,12 +209,10 @@ def convert_date(date_time):
     format = '%a, %d %b %Y %H:%M:%S %Z'
     datetime_str = datetime.datetime.strptime(date_time, format)
     format_datetime_str = datetime_str.strftime("%d/%m/%Y %H:%M:%S")
-
     return format_datetime_str
 
 
 def send_email(row_data, message):
-
     def sendMailUsingSendGrid(
         API,
         from_email,
@@ -206,42 +238,71 @@ def send_email(row_data, message):
                 SHEET.update_cell(row_num, 10, message)
             except Exception as e:
                 print(e)
-
     try:
         settings = CONFIG["SETTINGS"]
     except Exception:
         settings = {}
-
     API = settings.get("APIKEY", None)
     from_email = settings.get("FROM", None)
     to_emails = row_data['Email address']
-
     subject = "RSVP Question/Comment Response"
     html_content = message
-
     sendMailUsingSendGrid(API, from_email, to_emails, subject, html_content)
 
 
 def email_response(row_data):
     message = compose_email_message(row_data)
-    send_email(row_data, message)
+    print(message)
+    # send_email(row_data, message)
 
 
 def ignore_question(row_data):
     print('Are you sure you want to process this question as "ignored"?')
     ignore = input('Enter Y or N and press enter to continue:').strip()
     while True:
-        if ignore == 'Y' or 'y':
+        if ignore.lower() == 'y':
+            clear()
+            print('Marking question/comment as ignored in worksheet...')
             row_num = row_data['row']
             SHEET.update_cell(row_num, 8, 'Ignored')
-        elif ignore == 'N' or 'n':
-            print('Returning to question/comment processing menu')
+            pause()
+            clear()
+            print('Worksheet updated, '
+                  'returning to Question/Comment Manager...')
+            pause()
+            clear()
+        elif ignore.lower() == 'n':
+            clear()
+            print('Returning to question/comment processing menu...')
+            pause()
+            clear()
             question_processing_menu(row_data)
         break
 
 
-def skip_question():
-    print('skip')
+def skip_question(row):
+    skip = input('Enter Y or N and press enter to continue:').strip()
+    while True:
+        if skip.lower() == 'y':
+            clear()
+            print('Question/comment skipped, '
+                  'returning to question/comment manager…')
+            pause()
+            clear()
+        elif skip.lower() == 'n':
+            clear()
+            print('Returning to question/comment processing menu…')
+            pause()
+            clear()
+            question_processing_menu(row)
+        break
+
+
+def display_row_data(row):
+    top_of_list = dict(itertools.islice(row.items(), 1, 8))
+    for key in top_of_list:
+        print(f"{key}: {top_of_list[key]}")
+    print('\n')
 
 
 def question_processing_menu(row):
@@ -249,6 +310,7 @@ def question_processing_menu(row):
         "Review the question/comment recieved "
         "and choose an appropriate action\n"
     )
+    display_row_data(row)
     print("To respond to the question/comment enter 1")
     print("To mark the question/comment as ignored enter 2")
     print(
@@ -259,16 +321,22 @@ def question_processing_menu(row):
     print("Press enter to continue\n")
     while True:
         action_selection = input("Enter a number between 1 and 4 here:\n")
-
         if validate_data(action_selection):
             if action_selection == '1':
+                clear()
+                print('Opening Email Composer...')
+                pause()
+                clear()
                 email_response(row)
             elif action_selection == '2':
                 ignore_question(row)
             elif action_selection == '3':
-                skip_question()
+                skip_question(row)
             elif action_selection == '4':
+                clear()
                 print('Exiting to main menu...')
+                pause()
+                clear()
                 main_menu()
             break
 
@@ -290,7 +358,6 @@ def validate_data(value):
     except ValueError as e:
         print(f"Invalid data: {e}, please try again.\n")
         return False
-
     return True
 
 
@@ -311,7 +378,6 @@ def question_asked():
         row_num += 1
         zipped = dict(zip(headings, row))
         headings_vals_dicts.append(zipped)
-
     asked_question = [
         row for row in headings_vals_dicts if not (
             row["Comments/questions"] == ""
@@ -334,17 +400,22 @@ def view_questions(data):
     """
     if len(data) >= 1:
         for row in data:
-            top_of_list = dict(itertools.islice(row.items(), 0, 8))
-            for key in top_of_list:
-                print(f"{key}: {top_of_list[key]}")
-            print('\n')
             question_processing_menu(row)
         print('No more questions.')
         print('You have reached the end of the list.')
         input("Press the Enter key to return to the main menu.")
+        clear()
+        print('Returning to main menu...')
+        pause()
+        clear()
+        main_menu()
     else:
         print('There are currently no questions/comments to review.')
         input("Press the Enter key to return to the main menu.")
+        clear()
+        print('Returning to main menu...')
+        pause()
+        clear()
         main_menu()
 
 
