@@ -2,6 +2,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 import itertools
 import configparser
+import datetime
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import ssl
@@ -136,7 +137,7 @@ def compose_email_message(row_data):
     print(f'Compose email message to {name} at {email_address}')
     compose_email_instructions()
     print(f'The comment/question left by {name} was:')
-    print(f'comment_question\n')
+    print(f'{comment_question}\n')
     input_list = []
     print(greeting)
     while True:
@@ -169,24 +170,40 @@ def compose_email_message(row_data):
     return message
 
 
+def convert_date(date_time):
+    # The format
+    format = '%a, %d %b %Y %H:%M:%S %Z'
+    datetime_str = datetime.datetime.strptime(date_time, format)
+    format_datetime_str = datetime_str.strftime("%d/%m/%Y %H:%M:%S")
+
+    return format_datetime_str
+
+
 def send_email(row_data, message):
-    def sendMailUsingSendGrid(API,
-                              from_email,
-                              to_emails,
-                              subject,
-                              html_content):
+
+    def sendMailUsingSendGrid(
+        API,
+        from_email,
+        to_emails,
+        subject,
+        html_content
+    ):
         if (
             API is not None
             and from_email is not None
             and to_emails is not None
         ):
-            message = Mail(from_email, to_emails, subject, html_content)
+            email = Mail(from_email, to_emails, subject, html_content)
             try:
                 sg = SendGridAPIClient(API)
-                response = sg.send(message)
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
+                response = sg.send(email)
+                date = response.headers['Date']
+                timestamp = convert_date(date)
+                print('\nEmail sent')
+                row_num = row_data['row']
+                SHEET.update_cell(row_num, 8, 'Responded')
+                SHEET.update_cell(row_num, 9, timestamp)
+                SHEET.update_cell(row_num, 10, message)
             except Exception as e:
                 print(e)
 
@@ -195,7 +212,6 @@ def send_email(row_data, message):
     except Exception:
         settings = {}
 
-    # variables
     API = settings.get("APIKEY", None)
     from_email = settings.get("FROM", None)
     to_emails = row_data['Email address']
