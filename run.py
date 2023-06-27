@@ -97,8 +97,64 @@ def analysis():
     main_menu()
 
 
-def email_response():
-    print('email response')
+def compose_email_instructions():
+    print('Instruction')
+    print('Enter the main body of your message in the input field, the greeting and sign off are automatically added.')
+    print('- Press the enter key to submit each line and start a new line.')
+    print('- Type "delete last line" and press enter to delete the last line entered and continue composing the message.')
+    print('- Type "delete message" and press enter to delete the whole message and start again.')
+    print('- Type "end message" and press enter to finish composing the message.\n')
+
+
+def update_email_composition(name, greeting, comment_question, input_list):
+    print('\033c')
+    compose_email_instructions()
+    print(f'The comment/question left by {name} was:')
+    print(comment_question)
+    print(greeting)
+    print(''.join(input_list))
+    print('\033[2A')
+
+
+def compose_email_message(row_data):
+    name = row_data['Name']
+    email_address = row_data['Email address']
+    comment_question = row_data['Comments/questions']
+    greeting = f'Hi {name},\n'
+    sign_off = '\nKind regards,\nRSVP Team'
+    print(f'Compose email message to {name} at {email_address}')
+    compose_email_instructions()
+    print(f'The comment/question left by {name} was:')
+    print(f'comment_question\n')
+    input_list = []
+    print(greeting)
+    while True:
+        user_input = input().strip()
+        if user_input.lower() == 'end message':
+            # add greeting and sign off, review question and confirm message complete y/n
+            print('\033c')
+            break
+        elif user_input == '':
+            input_list.append('\n')
+        elif user_input.lower() == 'delete last line':
+            del input_list[-1]
+            update_email_composition(name, greeting, comment_question, input_list)
+        elif user_input.lower() == 'delete message':
+            input_list.clear()
+            update_email_composition(name, greeting, comment_question, input_list)
+        else:
+            input_list.append(user_input + '\n')
+    input_list.insert(0, greeting + '\n')
+    input_list.append(sign_off)
+    message = ''.join(input_list)
+
+    return message
+
+
+def email_response(row_data):
+    message = compose_email_message(row_data)
+
+    print(message)
 
 
 def ignore_question(row_data):
@@ -136,7 +192,7 @@ def question_processing_menu(row):
 
         if validate_data(action_selection):
             if action_selection == '1':
-                email_response()
+                email_response(row)
             elif action_selection == '2':
                 ignore_question(row)
             elif action_selection == '3':
