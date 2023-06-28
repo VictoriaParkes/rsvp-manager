@@ -37,7 +37,11 @@ def pause():
     time.sleep(2)
 
 
-# def transition_between_screens():
+def transition_between_screens(text):
+    clear()
+    print(text)
+    pause()
+    clear()
 
 
 def main_menu():
@@ -53,16 +57,11 @@ def main_menu():
                           " and press enter to continue:\n")
         if validate_menu_selection(selection):
             if selection == '1':
-                clear()
-                print('Analysing data...')
-                pause()
-                clear()
+                transition_between_screens('Analysing data...')
                 analysis()
             elif selection == '2':
-                clear()
-                print('Opening Question/Comment Manager...')
-                pause()
-                clear()
+                transition_between_screens('Opening Question/Comment '
+                                           'Manager...')
                 question_manager()
             break
 
@@ -127,10 +126,7 @@ def analysis():
     calc_attendance_number()
     question_responses(6)
     input("Press the Enter key to return to the main menu.")
-    clear()
-    print('Returning to main menu...')
-    pause()
-    clear()
+    transition_between_screens('Returning to main menu...')
     main_menu()
 
 
@@ -215,10 +211,8 @@ def compose_email_message(row_data, name, email_address):
                                      greeting,
                                      input_list)
         elif user_input.lower() == 'exit':
-            clear()
-            print('Returing to question/comment processing menu...')
-            pause()
-            clear()
+            transition_between_screens('Returing to question/comment '
+                                       'processing menu...')
             question_processing_menu(row_data)
         else:
             input_list.append(user_input + '\n')
@@ -304,17 +298,12 @@ def ignore_question(row_data):
             row_num = row_data['row']
             SHEET.update_cell(row_num, 8, 'Ignored')
             pause()
-            clear()
-            print('Worksheet updated, '
-                  'returning to Question/Comment Manager...')
-            pause()
-            clear()
+            transition_between_screens('Worksheet updated, returning '
+                                       'to Question/Comment Manager...')
             break
         elif ignore.lower() == 'n':
-            clear()
-            print('Returning to question/comment processing menu...')
-            pause()
-            clear()
+            transition_between_screens('Returning to question/comment '
+                                       'processing menu...')
             question_processing_menu(row_data)
         else:
             print('\033[2A')
@@ -329,17 +318,12 @@ def skip_question(row_data):
     while True:
         skip = input('Enter Y or N and press enter to continue:').strip()
         if skip.lower() == 'y':
-            clear()
-            print('Question/comment skipped, '
-                  'returning to question/comment manager…')
-            pause()
-            clear()
+            transition_between_screens('Question/comment skipped, returning '
+                                       'to question/comment manager…')
             break
         elif skip.lower() == 'n':
-            clear()
-            print('Returning to question/comment processing menu…')
-            pause()
-            clear()
+            transition_between_screens('Returning to question/comment '
+                                       'processing menu…')
             question_processing_menu(row_data)
         else:
             print('\033[2A')
@@ -372,10 +356,7 @@ def question_processing_menu(row):
         action_selection = input("Enter a number between 1 and 4 here:\n")
         if validate_data(action_selection):
             if action_selection == '1':
-                clear()
-                print('Opening Email Composer...')
-                pause()
-                clear()
+                transition_between_screens('Opening Email Composer...')
                 email_response(row)
             elif action_selection == '2':
                 clear()
@@ -384,10 +365,7 @@ def question_processing_menu(row):
                 clear()
                 skip_question(row)
             elif action_selection == '4':
-                clear()
-                print('Exiting to main menu...')
-                pause()
-                clear()
+                transition_between_screens('Exiting to main menu...')
                 main_menu()
             break
 
@@ -455,18 +433,12 @@ def view_questions(data):
         print('No more questions.')
         print('You have reached the end of the list.')
         input("Press the Enter key to return to the main menu.")
-        clear()
-        print('Returning to main menu...')
-        pause()
-        clear()
+        transition_between_screens('Returning to main menu...')
         main_menu()
     else:
         print('There are currently no questions/comments to review.')
         input("Press the Enter key to return to the main menu.")
-        clear()
-        print('Returning to main menu...')
-        pause()
-        clear()
+        transition_between_screens('Returning to main menu...')
         main_menu()
 
 
