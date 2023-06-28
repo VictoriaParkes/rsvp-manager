@@ -198,12 +198,19 @@ def compose_email_message(row_data, name, email_address):
         elif user_input == '':
             input_list.append('\n')
         elif user_input.lower() == 'delete last line':
-            del input_list[-1]
-            update_email_composition(row_data,
-                                     name,
-                                     email_address,
-                                     greeting,
-                                     input_list)
+            if len(input_list) > 0:
+                del input_list[-1]
+                update_email_composition(row_data,
+                                         name,
+                                         email_address,
+                                         greeting,
+                                         input_list)
+            else:
+                update_email_composition(row_data,
+                                         name,
+                                         email_address,
+                                         greeting,
+                                         input_list)
         elif user_input.lower() == 'delete message':
             input_list.clear()
             update_email_composition(row_data,
