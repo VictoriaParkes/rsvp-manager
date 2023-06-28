@@ -55,7 +55,7 @@ def main_menu():
     while True:
         selection = input("Enter your choice here"
                           " and press enter to continue:\n")
-        if validate_menu_selection(selection):
+        if validate_numerical_input(2, selection):
             if selection == '1':
                 transition_between_screens('Analysing data...')
                 analysis()
@@ -66,7 +66,7 @@ def main_menu():
             break
 
 
-def validate_menu_selection(selection):
+def validate_numerical_input(input_count, value):
     """
     REWRITE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     Inside the try, converts all string values into integers.
@@ -75,10 +75,11 @@ def validate_menu_selection(selection):
     REWRITE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     """
     try:
-        selection = int(selection)
-        if selection > 2:
+        selection = int(value)
+        if selection > input_count or selection < 1:
             raise ValueError(
-                f"Please enter 1 or 2, you entered {selection}"
+                f'Please enter a number from 1 - {input_count}, '
+                f'you entered {value}'
             )
     except ValueError as e:
         print(f"Invalid data: {e}, please try again.\n")
@@ -353,41 +354,21 @@ def question_processing_menu(row):
     print("To exit to the main menu enter 4\n")
     print("Press enter to continue\n")
     while True:
-        action_selection = input("Enter a number between 1 and 4 here:\n")
-        if validate_data(action_selection):
-            if action_selection == '1':
+        selection = input("Enter a number between 1 and 4 here:\n")
+        if validate_numerical_input(4, selection):
+            if selection == '1':
                 transition_between_screens('Opening Email Composer...')
                 email_response(row)
-            elif action_selection == '2':
+            elif selection == '2':
                 clear()
                 ignore_question(row)
-            elif action_selection == '3':
+            elif selection == '3':
                 clear()
                 skip_question(row)
-            elif action_selection == '4':
+            elif selection == '4':
                 transition_between_screens('Exiting to main menu...')
                 main_menu()
             break
-
-
-def validate_data(value):
-    """
-    REWRITE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    Inside the try, converts all string values into integers.
-    Raises ValueError if strings cannot be converted into int,
-    or if there aren't exactly 6 values.
-    REWRITE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    """
-    try:
-        selection = int(value)
-        if selection > 4 or selection < 1:
-            raise ValueError(
-                f"Please enter a number from 1 - 4, you entered {value}"
-            )
-    except ValueError as e:
-        print(f"Invalid data: {e}, please try again.\n")
-        return False
-    return True
 
 
 def question_asked():
