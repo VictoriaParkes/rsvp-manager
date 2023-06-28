@@ -294,9 +294,10 @@ def email_response(row_data):
 
 
 def ignore_question(row_data):
+    display_row_data(row_data)
     print('Are you sure you want to process this question as "ignored"?')
-    ignore = input('Enter Y or N and press enter to continue:').strip()
     while True:
+        ignore = input('Enter Y or N and press enter to continue:').strip()
         if ignore.lower() == 'y':
             clear()
             print('Marking question/comment as ignored in worksheet...')
@@ -308,31 +309,41 @@ def ignore_question(row_data):
                   'returning to Question/Comment Manager...')
             pause()
             clear()
+            break
         elif ignore.lower() == 'n':
             clear()
             print('Returning to question/comment processing menu...')
             pause()
             clear()
             question_processing_menu(row_data)
-        break
+        else:
+            print('\033[2A')
+            print('Enter Y for yes or N for no                    ')
 
 
-def skip_question(row):
-    skip = input('Enter Y or N and press enter to continue:').strip()
+def skip_question(row_data):
+    display_row_data(row_data)
+    print('If you choose to skip this question it will still be available '
+          'to process later.')
+    print('Are you sure you want to skip this question for now?')
     while True:
+        skip = input('Enter Y or N and press enter to continue:').strip()
         if skip.lower() == 'y':
             clear()
             print('Question/comment skipped, '
                   'returning to question/comment manager…')
             pause()
             clear()
+            break
         elif skip.lower() == 'n':
             clear()
             print('Returning to question/comment processing menu…')
             pause()
             clear()
-            question_processing_menu(row)
-        break
+            question_processing_menu(row_data)
+        else:
+            print('\033[2A')
+            print('Enter Y for yes or N for no.                    ')
 
 
 def display_row_data(row):
@@ -343,6 +354,7 @@ def display_row_data(row):
 
 
 def question_processing_menu(row):
+    print('Question/Comment Manager\n')
     print(
         "Review the question/comment recieved "
         "and choose an appropriate action\n"
@@ -366,8 +378,10 @@ def question_processing_menu(row):
                 clear()
                 email_response(row)
             elif action_selection == '2':
+                clear()
                 ignore_question(row)
             elif action_selection == '3':
+                clear()
                 skip_question(row)
             elif action_selection == '4':
                 clear()
