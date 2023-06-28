@@ -147,27 +147,28 @@ def compose_email_instructions():
           'message.\n')
 
 
-def update_email_composition(name, greeting, comment_question, input_list):
-    clear()
+def compose_email_screen(row_data, name, email_address, greeting):
+    display_row_data(row_data)
+    print(f'Compose email message to {name} at {email_address}\n')
     compose_email_instructions()
-    print(f'The question/comment left by {name} was:')
-    print(comment_question)
     print(greeting)
+
+
+def update_email_composition(row_data,
+                             name,
+                             email_address,
+                             greeting,
+                             input_list):
+    clear()
+    compose_email_screen(row_data, name, email_address, greeting)
     print(''.join(input_list))
     print('\033[2A')
 
 
-def compose_email_message(row_data):
-    name = row_data['Name']
-    email_address = row_data['Email address']
-    comment_question = row_data['Comments/questions']
+def compose_email_message(row_data, name, email_address):
     greeting = f'Hi {name},\n'
-    sign_off = '\nKind regards,\nRSVP Team'
-    print(f'Compose email message to {name} at {email_address}\n')
-    compose_email_instructions()
-    print(f'The question/comment left by {name} was:')
-    print(f'{comment_question}\n')
-    print(greeting)
+    sign_off = 'Kind regards,\nRSVP Team'
+    compose_email_screen(row_data, name, email_address, greeting)
     input_list = []
     while True:
         break_flag = False
@@ -176,10 +177,9 @@ def compose_email_message(row_data):
             clear()
             print('Please review you email message before continuing...\n')
             print(greeting)
-            print(user_input)
+            print(''.join(input_list))
             print(f'{sign_off}\n')
-            print('Confirm if this email message is complete '
-                  'and ready to be sent.')
+            print('Confirm if this message is complete to send email.')
             while True:
                 confirm = input('Enter Y or N and '
                                 'press enter to continue:').strip()
@@ -187,9 +187,10 @@ def compose_email_message(row_data):
                     break_flag = True
                     break
                 elif confirm.lower() == 'n':
-                    update_email_composition(name,
+                    update_email_composition(row_data,
+                                             name,
+                                             email_address,
                                              greeting,
-                                             comment_question,
                                              input_list)
                     break
                 else:
@@ -201,15 +202,17 @@ def compose_email_message(row_data):
             input_list.append('\n')
         elif user_input.lower() == 'delete last line':
             del input_list[-1]
-            update_email_composition(name,
+            update_email_composition(row_data,
+                                     name,
+                                     email_address,
                                      greeting,
-                                     comment_question,
                                      input_list)
         elif user_input.lower() == 'delete message':
             input_list.clear()
-            update_email_composition(name,
+            update_email_composition(row_data,
+                                     name,
+                                     email_address,
                                      greeting,
-                                     comment_question,
                                      input_list)
         elif user_input.lower() == 'exit':
             clear()
@@ -219,9 +222,8 @@ def compose_email_message(row_data):
             question_processing_menu(row_data)
         else:
             input_list.append(user_input + '\n')
-    clear()
     input_list.insert(0, greeting + '\n')
-    input_list.append(sign_off)
+    input_list.append('\n' + sign_off)
     message = ''.join(input_list)
     return message
 
@@ -234,7 +236,7 @@ def convert_date(date_time):
     return format_datetime_str
 
 
-def send_email(row_data, message):
+def send_email(row_data, name, email_address, message):
     def sendMailUsingSendGrid(
         API,
         from_email,
@@ -252,12 +254,7 @@ def send_email(row_data, message):
                 sg = SendGridAPIClient(API)
                 response = sg.send(email)
                 date = response.headers['Date']
-                timestamp = convert_date(date)
-                print('\nEmail sent')
-                row_num = row_data['row']
-                SHEET.update_cell(row_num, 8, 'Responded')
-                SHEET.update_cell(row_num, 9, timestamp)
-                SHEET.update_cell(row_num, 10, message)
+                return date
             except Exception as e:
                 print(e)
     try:
@@ -269,13 +266,30 @@ def send_email(row_data, message):
     to_emails = row_data['Email address']
     subject = "RSVP Question/Comment Response"
     html_content = message
-    sendMailUsingSendGrid(API, from_email, to_emails, subject, html_content)
+    date = sendMailUsingSendGrid(API,
+                                 from_email,
+                                 to_emails,
+                                 subject,
+                                 html_content)
+    print(f'Email successfully sent to {name} at {email_address}\n')
+    timestamp = convert_date(date)
+    row_num = row_data['row']
+    print('Updating worksheet...')
+    pause()
+    SHEET.update_cell(row_num, 8, 'Responded')
+    SHEET.update_cell(row_num, 9, timestamp)
+    SHEET.update_cell(row_num, 10, message)
+    print('Worksheet successfully updated\n')
 
 
 def email_response(row_data):
-    message = compose_email_message(row_data)
-    print(message)
-    # send_email(row_data, message)
+    name = row_data['Name']
+    email_address = row_data['Email address']
+    message = compose_email_message(row_data, name, email_address)
+    clear()
+    print(f'Sending email to {name} at {email_address}...')
+    pause()
+    send_email(row_data, name, email_address, message)
     input('Press enter to continue...')
 
 
