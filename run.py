@@ -167,15 +167,36 @@ def compose_email_message(row_data):
     compose_email_instructions()
     print(f'The question/comment left by {name} was:')
     print(f'{comment_question}\n')
-    input_list = []
     print(greeting)
+    input_list = []
     while True:
+        break_flag = False
         user_input = input().strip()
         if user_input.lower() == 'end message':
-            # add greeting and sign off, review question
-            # confirm message complete y/n
-            print('\033c')
-            break
+            clear()
+            print('Please review you email message before continuing...\n')
+            print(greeting)
+            print(user_input)
+            print(f'{sign_off}\n')
+            print('Confirm if this email message is complete '
+                  'and ready to be sent.')
+            while True:
+                confirm = input('Enter Y or N and '
+                                'press enter to continue:').strip()
+                if confirm.lower() == 'y':
+                    break_flag = True
+                    break
+                elif confirm.lower() == 'n':
+                    update_email_composition(name,
+                                             greeting,
+                                             comment_question,
+                                             input_list)
+                    break
+                else:
+                    print('\033[2A')
+                    print('Enter Y for yes or N for no                 ')
+            if break_flag:
+                break
         elif user_input == '':
             input_list.append('\n')
         elif user_input.lower() == 'delete last line':
@@ -198,6 +219,7 @@ def compose_email_message(row_data):
             question_processing_menu(row_data)
         else:
             input_list.append(user_input + '\n')
+    clear()
     input_list.insert(0, greeting + '\n')
     input_list.append(sign_off)
     message = ''.join(input_list)
@@ -254,6 +276,7 @@ def email_response(row_data):
     message = compose_email_message(row_data)
     print(message)
     # send_email(row_data, message)
+    input('Press enter to continue...')
 
 
 def ignore_question(row_data):
