@@ -20,7 +20,7 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 CONFIG = configparser.ConfigParser()
-CONFIG.read("config.ini")
+CONFIG.read('config.ini')
 
 
 try:
@@ -92,7 +92,7 @@ def validate_numerical_input(input_count, value):
                 f'you entered {value}'
             )
     except ValueError as e:
-        print(f"Invalid data: {e}, please try again.\n")
+        print(f'Invalid data: {e}, please try again.\n')
         return False
     return True
 
@@ -246,7 +246,7 @@ def convert_date(date_time):
     # The format
     format = '%a, %d %b %Y %H:%M:%S %Z'
     datetime_str = datetime.datetime.strptime(date_time, format)
-    format_datetime_str = datetime_str.strftime("%d/%m/%Y %H:%M:%S")
+    format_datetime_str = datetime_str.strftime('%d/%m/%Y %H:%M:%S')
     return format_datetime_str
 
 
@@ -272,13 +272,13 @@ def send_email(row_data, name, email_address, message):
             except Exception as e:
                 print(f'Sorry an error has occurred: {e}')
     try:
-        settings = CONFIG["SETTINGS"]
+        settings = CONFIG['SETTINGS']
     except Exception:
         settings = {}
-    API = settings.get("APIKEY", None)
-    from_email = settings.get("FROM", None)
+    API = settings.get('APIKEY', None)
+    from_email = settings.get('FROM', None)
     to_emails = row_data['Email address']
-    subject = "RSVP Question/Comment Response"
+    subject = 'RSVP Question/Comment Response'
     html_content = message
     date = sendMailUsingSendGrid(API,
                                  from_email,
@@ -353,15 +353,15 @@ def skip_question(row_data):
 def display_row_data(row):
     top_of_list = dict(itertools.islice(row.items(), 1, 8))
     for key in top_of_list:
-        print(f"{key}: {top_of_list[key]}")
+        print(f'{key}: {top_of_list[key]}')
     print('\n')
 
 
 def question_processing_menu(row):
     print('Question/Comment Manager\n')
     print(
-        "Review the question/comment recieved "
-        "and choose an appropriate action\n"
+        'Review the question/comment recieved '
+        'and choose an appropriate action\n'
     )
     display_row_data(row)
     print('1. Respond to the question/comment')
@@ -406,11 +406,11 @@ def question_asked():
         headings_vals_dicts.append(zipped)
     asked_question = [
         row for row in headings_vals_dicts if not (
-            row["Comments/questions"] == ""
+            row['Comments/questions'] == ''
         ) and not (
-            row["Responded/ignored"] == "Responded"
+            row['Responded/ignored'] == 'Responded'
         ) and not (
-            row["Responded/ignored"] == "Ignored"
+            row['Responded/ignored'] == 'Ignored'
         )
     ]
     return asked_question
@@ -429,12 +429,12 @@ def view_questions(data):
             question_processing_menu(row)
         print('No more questions.')
         print('You have reached the end of the list.')
-        input("Press the Enter key to return to the main menu.")
+        input('Press the Enter key to return to the main menu.')
         transition_between_screens('Returning to main menu...')
         main_menu()
     else:
         print('There are currently no questions/comments to review.')
-        input("Press the Enter key to return to the main menu.")
+        input('Press the Enter key to return to the main menu.')
         transition_between_screens('Returning to main menu...')
         main_menu()
 
@@ -444,6 +444,6 @@ def question_manager():
     view_questions(question_rows)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     print('Welcome to the RSVP Response Manager.\n')
     main_menu()
