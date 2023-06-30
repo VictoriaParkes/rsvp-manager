@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+import sys
 import itertools
 import configparser
 import datetime
@@ -55,12 +56,13 @@ def main_menu():
     """
     print('Main Menu\n')
     print('1. RSVP Response Data Analysis')
-    print('2. Question/Comment Manager\n')
-    print("Select an option by entering 1 or 2\n")
+    print('2. Question/Comment Manager')
+    print('3. Exit RSVP Response Manager\n')
+    print('Select an option by entering a number between 1 and 3.\n')
     while True:
-        selection = input("Enter your choice here"
-                          " and press enter to continue:\n")
-        if validate_numerical_input(2, selection):
+        selection = input('Enter your choice here'
+                          ' and press enter to continue:\n')
+        if validate_numerical_input(3, selection):
             if selection == '1':
                 transition_between_screens('Analysing data...')
                 analysis()
@@ -68,6 +70,9 @@ def main_menu():
                 transition_between_screens('Opening Question/Comment '
                                            'Manager...')
                 question_manager()
+            elif selection == '3':
+                clear()
+                sys.exit('Goodbye')
             break
 
 
