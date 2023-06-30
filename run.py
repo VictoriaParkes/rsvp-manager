@@ -61,7 +61,7 @@ def main_menu():
     print('Select an option by entering a number between 1 and 3.\n')
     while True:
         selection = input('Enter your choice here'
-                          ' and press enter to continue:\n')
+                          ' and press enter to continue:\n').strip()
         if validate_numerical_input(3, selection):
             if selection == '1':
                 transition_between_screens('Analysing data...')
@@ -182,7 +182,7 @@ def compose_email_message(row_data, name, email_address):
     while True:
         break_flag = False
         user_input = input().strip()
-        if user_input.lower() == 'end message':
+        if user_input == 'end message':
             clear()
             print('Please review you email message before continuing...\n')
             print(greeting)
@@ -191,11 +191,11 @@ def compose_email_message(row_data, name, email_address):
             print('Confirm if this message is complete to send email.')
             while True:
                 confirm = input('Enter Y or N and '
-                                'press enter to continue:').strip()
-                if confirm.lower() == 'y':
+                                'press enter to continue:').strip().lower()
+                if confirm == 'y':
                     break_flag = True
                     break
-                elif confirm.lower() == 'n':
+                elif confirm == 'n':
                     update_email_composition(row_data,
                                              name,
                                              email_address,
@@ -209,7 +209,7 @@ def compose_email_message(row_data, name, email_address):
                 break
         elif user_input == '':
             input_list.append('\n')
-        elif user_input.lower() == 'delete last line':
+        elif user_input == 'delete last line':
             if len(input_list) > 0:
                 del input_list[-1]
                 update_email_composition(row_data,
@@ -223,14 +223,14 @@ def compose_email_message(row_data, name, email_address):
                                          email_address,
                                          greeting,
                                          input_list)
-        elif user_input.lower() == 'delete message':
+        elif user_input == 'delete message':
             input_list.clear()
             update_email_composition(row_data,
                                      name,
                                      email_address,
                                      greeting,
                                      input_list)
-        elif user_input.lower() == 'exit':
+        elif user_input == 'exit':
             transition_between_screens('Returing to question/comment '
                                        'processing menu...')
             question_processing_menu(row_data)
@@ -311,8 +311,8 @@ def ignore_question(row_data):
     display_row_data(row_data)
     print('Are you sure you want to process this question as "ignored"?')
     while True:
-        ignore = input('Enter Y or N and press enter to continue:').strip()
-        if ignore.lower() == 'y':
+        ignore = input('Enter Y or N and press enter to continue:').strip().lower()
+        if ignore == 'y':
             clear()
             print('Marking question/comment as ignored in worksheet...')
             row_num = row_data['row']
@@ -321,7 +321,7 @@ def ignore_question(row_data):
             transition_between_screens('Worksheet updated, returning '
                                        'to Question/Comment Manager...')
             break
-        elif ignore.lower() == 'n':
+        elif ignore == 'n':
             transition_between_screens('Returning to question/comment '
                                        'processing menu...')
             question_processing_menu(row_data)
@@ -336,12 +336,12 @@ def skip_question(row_data):
           'to process later.')
     print('Are you sure you want to skip this question for now?')
     while True:
-        skip = input('Enter Y or N and press enter to continue:').strip()
-        if skip.lower() == 'y':
+        skip = input('Enter Y or N and press enter to continue:').strip().lower()
+        if skip == 'y':
             transition_between_screens('Question/comment skipped, returning '
                                        'to question/comment manager…')
             break
-        elif skip.lower() == 'n':
+        elif skip == 'n':
             transition_between_screens('Returning to question/comment '
                                        'processing menu…')
             question_processing_menu(row_data)
@@ -370,7 +370,7 @@ def question_processing_menu(row):
     print('4. Exit to the main menu\n')
     while True:
         selection = input('Enter your choice here'
-                          ' and press enter to continue:\n')
+                          ' and press enter to continue:\n').strip()
         if validate_numerical_input(4, selection):
             if selection == '1':
                 transition_between_screens('Opening Email Composer...')
