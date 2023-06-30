@@ -102,29 +102,31 @@ def responses_total_calc(col):
     Calculate the total number of rows of data in the worksheet.
     """
     total_rows = len(SHEET.col_values(col)[1:])
-    blank_rows = SHEET.col_values(col).count("")
+    blank_rows = SHEET.col_values(col).count('')
     responses = total_rows - blank_rows
     return responses
 
 
 def question_responses(col):
+    question = SHEET.col_values(col)[0]
     possible_answers = set((SHEET.col_values(col)[1:]))
-    while "" in possible_answers:
-        possible_answers.remove("")
+    print(f'Analysis of answer to question "{question}":')
+    while '' in possible_answers:
+        possible_answers.remove('')
     all_column_values = list((SHEET.col_values(col)[1:]))
     total_responses = responses_total_calc(col)
     for answer in possible_answers:
         answer_percent = (all_column_values.count(answer)/total_responses)*100
-        print(f"{answer} = {answer_percent}%")
+        print(f'>>> {answer_percent}% of the respondents answered {answer}.')
 
 
 def calc_attendance_number():
     attendance_answers = SHEET.col_values(5)[1:]
-    while "" in attendance_answers:
-        attendance_answers.remove("")
+    while '' in attendance_answers:
+        attendance_answers.remove('')
     attendance_int = [int(answer) for answer in attendance_answers]
     total = sum(attendance_int)
-    print(f"There are a total of {total} expected attendees.")
+    print(f'\nThere are a total of {total} expected attendees.\n')
 
 
 def analysis():
@@ -136,7 +138,7 @@ def analysis():
     question_responses(4)
     calc_attendance_number()
     question_responses(6)
-    input("Press the Enter key to return to the main menu.")
+    input('\nPress the Enter key to return to the main menu.')
     transition_between_screens('Returning to main menu...')
     main_menu()
 
