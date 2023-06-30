@@ -11,9 +11,9 @@ import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
 SCOPE = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/auth/drive"
+    'https://www.googleapis.com/auth/spreadsheets',
+    'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/drive'
 ]
 
 CREDS = Credentials.from_service_account_file('creds.json')
