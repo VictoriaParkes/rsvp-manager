@@ -362,16 +362,13 @@ def question_processing_menu(row):
         "and choose an appropriate action\n"
     )
     display_row_data(row)
-    print("To respond to the question/comment enter 1")
-    print("To mark the question/comment as ignored enter 2")
-    print(
-        "To skip to the next question/comment "
-        "without processing enter 3"
-    )
-    print("To exit to the main menu enter 4\n")
-    print("Press enter to continue\n")
+    print('1. Respond to the question/comment')
+    print('2. Mark the question/comment as ignored')
+    print('3. Skip to the next question/comment')
+    print('4. Exit to the main menu\n')
     while True:
-        selection = input("Enter a number between 1 and 4 here:\n")
+        selection = input('Enter your choice here'
+                          ' and press enter to continue:\n')
         if validate_numerical_input(4, selection):
             if selection == '1':
                 transition_between_screens('Opening Email Composer...')
