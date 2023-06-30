@@ -18,9 +18,14 @@ SCOPE = [
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open('RSVP_Responses').worksheet('Responses')
 CONFIG = configparser.ConfigParser()
 CONFIG.read("config.ini")
+
+
+try:
+    SHEET = GSPREAD_CLIENT.open('RSVP_Responses').worksheet('Responses')
+except Exception:
+    print(f'Sorry, the RSVP worksheet can not be loaded.')
 
 
 def clear():
@@ -435,5 +440,7 @@ def question_manager():
     view_questions(question_rows)
 
 
-print('Welcome to the RSVP Response Manager.\n')
-main_menu()
+
+    print('Welcome to the RSVP Response Manager.\n')
+    main_menu()
+
