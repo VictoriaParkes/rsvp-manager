@@ -270,7 +270,7 @@ def send_email(row_data, name, email_address, message):
                 date = response.headers['Date']
                 return date
             except Exception as e:
-                print(e)
+                print(f'Sorry an error has occurred: {e}')
     try:
         settings = CONFIG["SETTINGS"]
     except Exception:
