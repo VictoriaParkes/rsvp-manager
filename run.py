@@ -440,7 +440,6 @@ def question_manager():
     view_questions(question_rows)
 
 
-
+if __name__ == "__main__":
     print('Welcome to the RSVP Response Manager.\n')
     main_menu()
-
