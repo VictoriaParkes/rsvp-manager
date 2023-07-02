@@ -1,18 +1,29 @@
-import gspread  # API to open, read and modify RSVP_Responses spreadsheet
+# API to open, read and modify RSVP_Responses spreadsheet
+import gspread
 # For authorisation for app access to gspread API
 from google.oauth2.service_account import Credentials
-import sys  # For access to the exit() function
-import itertools  # For access to the islice() function
-import configparser  # For access to the ConfigParser() function
-import datetime  # For access to classes for manipulating dates and times
-import time  # For access to the sleep() function
-from sendgrid import SendGridAPIClient  # API to send emails
-# To define to/from email addresses, subject and message for sending email with sendgrid.
-from sendgrid.helpers.mail import Mail
-import ssl  # For access to Secure Sockets Layer encryption and peer authentication facilities
+# For access to the exit() function
+import sys
+# For access to the islice() function
+import itertools
+# For access to the ConfigParser() function
+import configparser
+# For access to classes for manipulating dates and times
+import datetime
+# For access to the sleep() function
+import time
+# API to send emails
+from sendgrid import SendGridAPIClient
+# To define to/from email addresses, subject and message for sending email
+# with sendgrid
+from sendgrid.helpers.mail import 
+# For access to Secure Sockets Layer encryption and peer authentication
+# facilities
+import ssl  
 # To turn certificate verification off by ignoring the SLL certificate
+# Sendgrid runs on https so would raise the error
+# SSL: CERTIFICATE_VERIFY_FAILED
 ssl._create_default_https_context = ssl._create_unverified_context
-# Sendgrid runs on https so would raise the error SSL: CERTIFICATE_VERIFY_FAILED
 
 SCOPE = [
     'https://www.googleapis.com/auth/spreadsheets',
@@ -91,7 +102,8 @@ def validate_numerical_input(input_count, value):
 		Bool: True if error raised, False if input valid and no errors raised.
 
 	Raises:
-		ValueError, if user input is larger than the number of options, smaller than 1 or not a numerical value.
+		ValueError, if user input is larger than the number of options,
+        smaller than 1 or not a numerical value.
     """
     try:
         selection = int(value)
@@ -176,7 +188,9 @@ def compose_email_instructions():
 
 
 def compose_email_screen(row_data, name, email_address, greeting):
-    """Call function to display RSVP question and answers currently being processed, call function to display instructions for composing email messages and print the greeting for the message.
+    """Call function to display RSVP question and answers currently being
+    processed, call function to display instructions for composing email
+    messages and print the greeting for the message.
 
 	Args:
 		row_data: dict of str -> str: RSVP question -> Answer.
@@ -195,7 +209,8 @@ def update_email_composition(row_data,
                              email_address,
                              greeting,
                              input_list):
-    """Update email composition screen after deleting or entering "n" for end message confirmation.
+    """Update email composition screen after deleting or entering "n" for end
+    message confirmation.
 
 	Args:
 		row_data: dict of str -> str: RSVP question -> Answer.
@@ -211,7 +226,9 @@ def update_email_composition(row_data,
 
 
 def compose_email_message(row_data, name, email_address):
-    """Compose email message with variables from RSVP response data taken from worksheet for greeting and sign off, and user inputs for main body of message.
+    """Compose email message with variables from RSVP response data taken from
+    worksheet for greeting and sign off, and user inputs for main body of
+    message.
 
 	Args:
 		row_data: dict of str -> str: RSVP question -> Answer.
@@ -219,7 +236,8 @@ def compose_email_message(row_data, name, email_address):
 		email_address: str: Respondents email address.
 
 	Returns:
-        str: Email message, comprised of concatenated list of strings with \n to separate when used in an email.
+        str: Email message, comprised of concatenated list of strings with \n
+        to separate when used in an email.
     """
     greeting = f'Hi {name},\n'
     sign_off = 'Kind regards,\nRSVP Team'
@@ -289,11 +307,12 @@ def compose_email_message(row_data, name, email_address):
 
 
 def convert_date(date_time):
-    """Convert format of email sent date and time to match format of RSVP timestamp in worksheet.
+    """Convert format of email sent date and time to match format of RSVP
+    timestamp in worksheet.
 
-	Args:
+    Args:
 		date_time: str: Date and time email sent.
-    
+
     Returns:
         str: Email sent timestamp formatted to match RSVP timestamp format.
     """
@@ -306,20 +325,28 @@ def convert_date(date_time):
 def send_email(row_data, name, email_address, message):
     """Define send_email_sendgrid() function. 
 	
-	In try block set variable "settings" as dict of str -> str from config file or empty dict if get settings fails. Get the API key and RSVP admin email from settings or none if "settings" empty dict. Set email address to send message to as respondent's email address, set the email subject line and set the main body of the email message to the composed message.
+	In try block set variable "settings" as dict of str -> str from config file
+    or empty dict if get settings fails. Get the API key and RSVP admin email
+    from settings or none if "settings" empty dict. Set email address to send
+    message to as respondent's email address, set the email subject line and
+    set the main body of the email message to the composed message.
 	
 	Call send_email_sendgrid() function.
 	
-	Print feedback to inform the user that email was sent successfully. Update worksheet with "Responded" value, reformatted email timestamp and the message sent to respondent.
+	Print feedback to inform the user that email was sent successfully. Update
+    worksheet with "Responded" value, reformatted email timestamp and the
+    message sent to respondent.
 	
 	Args:
 		row_data: dict of str -> str: RSVP question -> Answer.
 		name: str: Respondents name.
 		email_address: str: Respondent's email address.
-		message: str: Message to be sent to respondent. Lines separated by "\n" for formatting.
+		message: str: Message to be sent to respondent. Lines separated by
+        "\n" for formatting.
 	
     Raises: 
-        Exception, if settings cannot be retrieved from config file. Creates empty dict.
+        Exception, if settings cannot be retrieved from config file. Creates
+        empty dict.
     """
     def sendMailUsingSendGrid(
         API,
@@ -328,14 +355,16 @@ def send_email(row_data, name, email_address, message):
         subject,
         html_content
     ):
-        """Send email from RSVP team email address to respondent email address with subject line and composed message.
+        """Send email from RSVP team email address to respondent email address
+        with subject line and composed message.
 	
         Args:
             API: str: API key needed to use Sendgrid.
             from_email: str: RSVP admin team email address.
             to_emails: str: Respondent's email address.
             subject: str: Subject line for email message.
-            html_content: str: Message to be sent to respondent. Lines separated by "\n" for formatting.
+            html_content: str: Message to be sent to respondent. Lines
+            separated by "\n" for formatting.
             
         Returns:
             str: The date and time the email was sent.
@@ -382,7 +411,8 @@ def send_email(row_data, name, email_address, message):
 
 
 def email_response(row_data):
-    """Gets name and respondent email address from dict containing respondent's answers.
+    """Gets name and respondent email address from dict containing respondent's
+    answers.
 	
 	Calls functions required to send email message to respondent.
 	
@@ -400,11 +430,14 @@ def email_response(row_data):
 
 
 def ignore_question(row_data):
-    """Asks the user for confirmation that they want to mark the question/comment as ignored until they enter a valid input.
+    """Asks the user for confirmation that they want to mark the
+    question/comment as ignored until they enter a valid input.
 	
-	Update worksheet with the value "Ignored" if user enters "y" into the input field to confirm they want to mark the question/comment as ignored.
+	Update worksheet with the value "Ignored" if user enters "y" into the
+    input field to confirm they want to mark the question/comment as ignored.
 	
-	Return to question/comment processing menu if the user enters "n" into the input field.
+	Return to question/comment processing menu if the user enters "n" into
+    the input field.
 	
 	Args:
         row_data: dict of str -> str: RSVP question -> Answer.
@@ -412,7 +445,9 @@ def ignore_question(row_data):
     display_row_data(row_data)
     print('Are you sure you want to process this question as "ignored"?')
     while True:
-        ignore = input('Enter Y or N and press enter to continue:').strip().lower()
+        ignore = input(
+            'Enter Y or N and press enter to continue:'
+        ).strip().lower()
         if ignore == 'y':
             clear()
             print('Marking question/comment as ignored in worksheet...')
@@ -432,11 +467,14 @@ def ignore_question(row_data):
 
 
 def skip_question(row_data):
-    """Asks the user for confirmation that they want to skip to the next question/comment until they enter a valid input.
+    """Asks the user for confirmation that they want to skip to the next
+    question/comment until they enter a valid input.
 	
-	Return to question/comment manager to process the next RSVP response data if user enters "y".
+	Return to question/comment manager to process the next RSVP response data
+    if user enters "y".
 	
-	Return to question/comment manager to select a processing option for the current RSVP response data.
+	Return to question/comment manager to select a processing option for the
+    current RSVP response data.
 	
 	Args:
         row_data: dict of str -> str: RSVP question -> Answer.
@@ -446,7 +484,9 @@ def skip_question(row_data):
           'to process later.')
     print('Are you sure you want to skip this question for now?')
     while True:
-        skip = input('Enter Y or N and press enter to continue:').strip().lower()
+        skip = input(
+            'Enter Y or N and press enter to continue:'
+        ).strip().lower()
         if skip == 'y':
             transition_between_screens('Question/comment skipped, returning '
                                        'to question/comment manager…')
@@ -461,10 +501,12 @@ def skip_question(row_data):
 
 
 def display_row_data(row):
-    """Remove unwanted dict items and loop through the remaining items to print each key-value pair on a new line in the terminal.
+    """Remove unwanted dict items and loop through the remaining items to print
+    each key-value pair on a new line in the terminal.
 	
 	Args:
-        row: dict of str -> str: Column heading -> Value - All values in row of worksheet.
+        row: dict of str -> str: Column heading -> Value - All values in row of
+        worksheet.
     """
     top_of_list = dict(itertools.islice(row.items(), 1, 8))
     for key in top_of_list:
@@ -473,10 +515,12 @@ def display_row_data(row):
 
 
 def question_processing_menu(row):
-    """Question/comment processing menu, displayed until user submits a valid input.
+    """Question/comment processing menu, displayed until user submits a valid
+    input.
 	
 	Args:
-        row: dict of str -> str: Column heading ->Value - All values in row of worksheet.
+        row: dict of str -> str: Column heading ->Value - All values in row of
+        worksheet.
     """
     print('Question/Comment Manager\n')
     print(
@@ -508,10 +552,13 @@ def question_processing_menu(row):
 
 
 def question_asked():
-    """Create a list of responses with questions or comments that have not been responded to or ignored, as dictionaries with headings as key and data as value.
+    """Create a list of responses with questions or comments that have not been
+    responded to or ignored, as dictionaries with headings as key and data as
+    value.
 	
 	Returns:
-        list of dicts of str -> str: The data of each row with a question/comment.
+        list of dicts of str -> str: The data of each row with a
+        question/comment.
     """
     data_vals = SHEET.get_all_values()
     headings = data_vals[0]
@@ -537,10 +584,14 @@ def question_asked():
 
 
 def view_questions(data):
-    """Check if list contains any response data items, iterate through the list, print the response data and run function to process question/comment or print a message informing the user that there are no questions/comments to review.
+    """Check if list contains any response data items, iterate through the
+    list, print the response data and run function to process question/comment
+    or print a message informing the user that there are no questions/comments
+    to review.
 
     Args:
-		data: list of dicts of str -> str: Column heading -> Value - All values in row of worksheet.
+		data: list of dicts of str -> str: Column heading -> Value - All values
+        in row of worksheet.
 	"""
     if len(data) >= 1:
         for row in data:
