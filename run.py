@@ -16,7 +16,7 @@ import time
 from sendgrid import SendGridAPIClient
 # To define to/from email addresses, subject and message for sending email
 # with sendgrid
-from sendgrid.helpers.mail import 
+from sendgrid.helpers.mail import Mail
 # For access to Secure Sockets Layer encryption and peer authentication
 # facilities
 import ssl  
