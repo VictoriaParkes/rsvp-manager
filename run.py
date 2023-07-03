@@ -370,11 +370,9 @@ def send_email(row_data, name, email_address, message):
         Raises:
             Exception, catches any error that occurs during email sending.
         """
-        if (
-            API is not None
+        if (API is not None
             and from_email is not None
-            and to_email is not None
-        ):
+            and to_email is not None):
             email = Mail(from_email, to_email, subject, html_content)
             try:
                 sg = SendGridAPIClient(API)
@@ -440,14 +438,14 @@ def ignore_question(row_data):
         row_data: dict of str -> str: RSVP question -> Answer.
     """
     display_row_data(row_data)
-    print('Are you sure you want to process this question as "ignored"?')
+    print('Are you sure you want to process this question as "Ignored"?')
     while True:
         ignore = input(
             'Enter Y or N and press enter to continue:'
         ).strip().lower()
         if ignore == 'y':
             clear()
-            print('Marking question/comment as ignored in worksheet...')
+            print('Marking question/comment as "Ignored" in worksheet...')
             row_num = row_data['row']
             SHEET.update_cell(row_num, 8, 'Ignored')
             pause()
