@@ -1,3 +1,4 @@
+import os
 # API to open, read and modify RSVP_Responses spreadsheet
 import gspread
 # For authorisation for app access to gspread API
@@ -7,7 +8,7 @@ import sys
 # For access to the islice() function
 import itertools
 # For access to the ConfigParser() function
-import configparser
+# import configparser
 # For access to classes for manipulating dates and times
 import datetime
 # For access to the sleep() function
@@ -34,8 +35,8 @@ SCOPE = [
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-CONFIG = configparser.ConfigParser()
-CONFIG.read('config.ini')
+# CONFIG = configparser.ConfigParser()
+# CONFIG.read('config.ini')
 
 
 # Raise exception error if worksheet cannot be loaded
@@ -389,12 +390,12 @@ def send_email(row_data, name, email_address, message):
                 print('Worksheet successfully updated\n')
             except Exception as e:
                 print(f'Sorry an error has occurred: {e}')
-    try:
-        settings = CONFIG['SETTINGS']
-    except Exception:
-        settings = {}
-    API = settings.get('APIKEY', None)
-    from_email = settings.get('FROM', None)
+    # try:
+        # settings = CONFIG['SETTINGS']
+    # except Exception:
+        # settings = {}
+    API = os.environ['SENDGRID_PASSWORD']
+    from_email = os.environ['RSVP_EMAIL']
     to_email = row_data['Email address']
     subject = 'RSVP Question/Comment Response'
     html_content = message
