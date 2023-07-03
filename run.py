@@ -348,10 +348,10 @@ def send_email(row_data, name, email_address, message):
         Exception, if settings cannot be retrieved from config file. Creates
         empty dict.
     """
-    def sendMailUsingSendGrid(
+    def send_email_sendgrid(
         API,
         from_email,
-        to_emails,
+        to_email,
         subject,
         html_content
     ):
@@ -361,7 +361,7 @@ def send_email(row_data, name, email_address, message):
         Args:
             API: str: API key needed to use Sendgrid.
             from_email: str: RSVP admin team email address.
-            to_emails: str: Respondent's email address.
+            to_email: str: Respondent's email address.
             subject: str: Subject line for email message.
             html_content: str: Message to be sent to respondent. Lines
             separated by "\n" for formatting.
@@ -375,14 +375,22 @@ def send_email(row_data, name, email_address, message):
         if (
             API is not None
             and from_email is not None
-            and to_emails is not None
+            and to_email is not None
         ):
-            email = Mail(from_email, to_emails, subject, html_content)
+            email = Mail(from_email, to_email, subject, html_content)
             try:
                 sg = SendGridAPIClient(API)
                 response = sg.send(email)
                 date = response.headers['Date']
-                return date
+                print(f'Email successfully sent to {name} at {email_address}\n')
+                timestamp = convert_date(date)
+                row_num = row_data['row']
+                print('Updating worksheet...')
+                pause()
+                SHEET.update_cell(row_num, 8, 'Responded')
+                SHEET.update_cell(row_num, 9, timestamp)
+                SHEET.update_cell(row_num, 10, message)
+                print('Worksheet successfully updated\n')
             except Exception as e:
                 print(f'Sorry an error has occurred: {e}')
     try:
@@ -391,23 +399,14 @@ def send_email(row_data, name, email_address, message):
         settings = {}
     API = settings.get('APIKEY', None)
     from_email = settings.get('FROM', None)
-    to_emails = row_data['Email address']
+    to_email = row_data['Email address']
     subject = 'RSVP Question/Comment Response'
     html_content = message
-    date = sendMailUsingSendGrid(API,
-                                 from_email,
-                                 to_emails,
-                                 subject,
-                                 html_content)
-    print(f'Email successfully sent to {name} at {email_address}\n')
-    timestamp = convert_date(date)
-    row_num = row_data['row']
-    print('Updating worksheet...')
-    pause()
-    SHEET.update_cell(row_num, 8, 'Responded')
-    SHEET.update_cell(row_num, 9, timestamp)
-    SHEET.update_cell(row_num, 10, message)
-    print('Worksheet successfully updated\n')
+    send_email_sendgrid(API,
+                       from_email,
+                       to_email,
+                       subject,
+                       html_content)
 
 
 def email_response(row_data):
