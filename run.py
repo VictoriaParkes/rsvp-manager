@@ -348,13 +348,11 @@ def send_email(row_data, name, email_address, message):
         Exception, if settings cannot be retrieved from config file. Creates
         empty dict.
     """
-    def send_email_sendgrid(
-        API,
-        from_email,
-        to_email,
-        subject,
-        html_content
-    ):
+    def send_email_sendgrid(API,
+                            from_email,
+                            to_email,
+                            subject,
+                            html_content):
         """Send email from RSVP team email address to respondent email address
         with subject line and composed message.
 	
