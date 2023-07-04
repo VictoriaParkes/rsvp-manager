@@ -16,8 +16,10 @@ import datetime
 import time
 # To get variables from environment
 import os
-# To load .env file
-from dotenv import load_dotenv
+# To load .env file in IDE
+if not os.environ.get("DEPLOYED"):
+    from dotenv import load_dotenv
+    load_dotenv('.env')
 
 SCOPE = [
     'https://www.googleapis.com/auth/spreadsheets',
@@ -373,7 +375,6 @@ def send_email(row_data, name, to_email, message):
             print(f'Sorry an error has occurred: {e}')
     
     
-    load_dotenv('.env')
     API = os.environ['SENDGRID_APIKEY']
     from_email = os.environ['RSVP_EMAIL']
     subject = 'RSVP Question/Comment Response'
