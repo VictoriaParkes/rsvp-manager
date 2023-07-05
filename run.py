@@ -103,7 +103,7 @@ def validate_numerical_input(input_count, value):
         if selection > input_count or selection < 1:
             raise ValueError(
                 f'Please enter a number from 1 - {input_count}, '
-                f'you entered {value}'
+                f'you entered {value}.'
             )
     except ValueError as e:
         print(f'Invalid data: {e}, please try again.\n')
@@ -134,14 +134,14 @@ def question_responses(col):
     """
     question = SHEET.col_values(col)[0]
     possible_answers = set((SHEET.col_values(col)[1:]))
-    print(f'Analysis of answer to question "{question}":')
+    print(f'Analysis of answers to question "{question}":')
     while '' in possible_answers:
         possible_answers.remove('')
     all_column_values = list((SHEET.col_values(col)[1:]))
     total_responses = responses_total_calc(col)
     for answer in possible_answers:
         answer_percent = (all_column_values.count(answer)/total_responses)*100
-        print(f'>>> {answer_percent}% of the respondents answered {answer}.')
+        print(f'>>> {answer_percent}% of the respondents answered "{answer}".')
 
 
 def calc_attendance_number():
@@ -192,7 +192,7 @@ def compose_email_screen(row_data, name, email_address, greeting):
         greeting: str: Greet for email message.
     """
     display_row_data(row_data)
-    print(f'Compose email message to {name} at {email_address}\n')
+    print(f'Compose email message to {name} at {email_address}.\n')
     compose_email_instructions()
     print(greeting)
 
@@ -261,7 +261,7 @@ def compose_email_message(row_data, name, email_address):
                     break
                 else:
                     print('\033[2A')
-                    print('Enter Y for yes or N for no                 ')
+                    print('Enter Y for yes or N for no.                 ')
             if break_flag:
                 break
         elif user_input == '':
@@ -362,7 +362,7 @@ def send_email(row_data, name, to_email, message):
             sg = SendGridAPIClient(API)
             response = sg.send(email)
             date = response.headers['Date']
-            print(f'Email successfully sent to {name} at {to_email}\n')
+            print(f'Email successfully sent to {name} at {to_email}.\n')
             timestamp = convert_date(date)
             row_num = row_data['row']
             print('Updating worksheet...')
@@ -439,7 +439,7 @@ def ignore_question(row_data):
             question_processing_menu(row_data)
         else:
             print('\033[2A')
-            print('Enter Y for yes or N for no                    ')
+            print('Enter Y for yes or N for no.                    ')
 
 
 def skip_question(row_data):
@@ -457,7 +457,7 @@ def skip_question(row_data):
     """
     display_row_data(row_data)
     print('If you choose to skip this question it will still be available '
-          'to process later.')
+          'to process later.\n')
     print('Are you sure you want to skip this question for now?')
     while True:
         skip = input(
@@ -466,7 +466,6 @@ def skip_question(row_data):
         if skip == 'y':
             transition_between_screens('Question/comment skipped, returning '
                                        'to Question/Comment Manager…')
-            break
         elif skip == 'n':
             transition_between_screens('Returning to Question/Comment '
                                        'Processing Menu…')
@@ -501,7 +500,7 @@ def question_processing_menu(row):
     print('Question/Comment Manager\n')
     print(
         'Review the question/comment recieved '
-        'and choose an appropriate action\n'
+        'and choose an appropriate action.\n'
     )
     display_row_data(row)
     print('1. Respond to the question/comment')
