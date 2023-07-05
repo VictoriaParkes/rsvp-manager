@@ -180,7 +180,9 @@ def compose_email_instructions():
     print('- Type "delete message" and press the Enter key to delete the '
           'whole message and start again.')
     print('- Type "end message" and press the Enter key to finish composing '
-          'the message.\n')
+          'the message.')
+    print('- Type "exit" and press the Enter key to return to the Question '
+          'Processing Menu.\n')
 
 
 def compose_email_screen(row_data, name, email_address, greeting):
