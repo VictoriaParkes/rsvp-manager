@@ -35,8 +35,8 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 try:
     SHEET = GSPREAD_CLIENT.open('RSVP_Responses').worksheet('Responses')
 except Exception:
-    print(f'Sorry, the RSVP worksheet can not be loaded.')
-    input('Press Enter to exit the program.')
+    print('Sorry, the RSVP worksheet can not be loaded.')
+    input('Press the Enter key to exit the program.')
     print('\033[3A')
     sys.exit('Goodbye                                            ')
 
@@ -72,7 +72,7 @@ def main_menu():
     print('Select an option by entering a number between 1 and 3.\n')
     while True:
         selection = input('Enter your choice here'
-                          ' and press enter to continue:\n').strip()
+                          ' and press the Enter key to continue:\n').strip()
         if validate_numerical_input(3, selection):
             if selection == '1':
                 transition_between_screens('Analysing data...')
@@ -174,13 +174,13 @@ def compose_email_instructions():
     print('Instructions')
     print('- Enter the main body of your message into the terminal, '
           'the greeting and sign off are automatically added for you.')
-    print('- Press the enter key to submit each line and start a new line.')
-    print('- Type "delete last line" and press enter to delete the last '
-          'line entered and continue composing the message.')
-    print('- Type "delete message" and press enter to delete the whole '
-          'message and start again.')
-    print('- Type "end message" and press enter to finish composing the '
-          'message.\n')
+    print('- Press the Enter key to submit each line and start a new line.')
+    print('- Type "delete last line" and press the Enter key to delete the '
+          'last line entered and continue composing the message.')
+    print('- Type "delete message" and press the Enter key to delete the '
+          'whole message and start again.')
+    print('- Type "end message" and press the Enter key to finish composing '
+          'the message.\n')
 
 
 def compose_email_screen(row_data, name, email_address, greeting):
@@ -250,8 +250,8 @@ def compose_email_message(row_data, name, email_address):
             print(f'{sign_off}\n')
             print('Confirm if this message is complete to send email.')
             while True:
-                confirm = input('Enter Y or N and '
-                                'press enter to continue:').strip().lower()
+                confirm = input('Enter Y or N and press '
+                                'the Enter key to continue:').strip().lower()
                 if confirm == 'y':
                     break_flag = True
                     break
@@ -402,7 +402,7 @@ def email_response(row_data):
     print(f'Sending email to {name} at {email_address}...')
     pause()
     send_email(row_data, name, email_address, message)
-    input('Press enter to continue...')
+    input('Press the Enter key to continue...')
     transition_between_screens('Returning to Question/Comment Manager...')
 
 
@@ -423,7 +423,7 @@ def ignore_question(row_data):
     print('Are you sure you want to process this question as "Ignored"?')
     while True:
         ignore = input(
-            'Enter Y or N and press enter to continue:'
+            'Enter Y or N and press the Enter key to continue:'
         ).strip().lower()
         if ignore == 'y':
             clear()
@@ -463,7 +463,7 @@ def skip_question(row_data):
     print('Are you sure you want to skip this question for now?')
     while True:
         skip = input(
-            'Enter Y or N and press enter to continue:'
+            'Enter Y or N and press the Enter key to continue:'
         ).strip().lower()
         if skip == 'y':
             transition_between_screens('Question/comment skipped, returning '
@@ -512,7 +512,7 @@ def question_processing_menu(row):
     print('4. Exit to the main menu\n')
     while True:
         selection = input('Enter your choice here'
-                          ' and press enter to continue:\n').strip()
+                          ' and press the Enter key to continue:\n').strip()
         if validate_numerical_input(4, selection):
             if selection == '1':
                 transition_between_screens('Opening Email Composer...')
