@@ -590,6 +590,12 @@ def question_manager():
     view_questions(question_rows)
 
 
-if __name__ == '__main__':
+def main():
+    """Clear screen, print welcome message and call main_menu()"""
+    clear()
     print('Welcome to the RSVP Response Manager.\n')
     main_menu()
+
+
+if __name__ == '__main__':
+    main()
