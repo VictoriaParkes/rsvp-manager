@@ -36,6 +36,9 @@ try:
     SHEET = GSPREAD_CLIENT.open('RSVP_Responses').worksheet('Responses')
 except Exception:
     print(f'Sorry, the RSVP worksheet can not be loaded.')
+    input('Press Enter to exit the program.')
+    print('\033[3A')
+    sys.exit('Goodbye                                            ')
 
 
 def clear():
