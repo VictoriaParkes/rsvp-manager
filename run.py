@@ -35,7 +35,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 try:
     SHEET = GSPREAD_CLIENT.open('RSVP_Responses').worksheet('Responses')
 except Exception:
-    print('Sorry, the RSVP worksheet can not be loaded.')
+    print('Sorry, the RSVP worksheet cannot be loaded.')
     input('Press the Enter key to exit the program.')
     print('\033[3A')
     sys.exit('Goodbye                                            ')
@@ -293,7 +293,7 @@ def compose_email_message(row_data, name, email_address):
                                      greeting,
                                      input_list)
         elif user_input == 'exit':
-            transition_between_screens('Returing to Question/Comment '
+            transition_between_screens('Returning to Question/Comment '
                                        'Processing Menu...')
             question_processing_menu(row_data)
         else:
@@ -504,7 +504,7 @@ def question_processing_menu(row):
     """
     print('Question/Comment Manager\n')
     print(
-        'Review the question/comment recieved '
+        'Review the question/comment received '
         'and choose an appropriate action.\n'
     )
     display_row_data(row)
