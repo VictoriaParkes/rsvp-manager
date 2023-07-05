@@ -440,6 +440,7 @@ def ignore_question(row_data):
         else:
             print('\033[2A')
             print('Enter Y for yes or N for no.                    ')
+        break
 
 
 def skip_question(row_data):
@@ -473,6 +474,7 @@ def skip_question(row_data):
         else:
             print('\033[2A')
             print('Enter Y for yes or N for no.                    ')
+        break
 
 
 def display_row_data(row):
