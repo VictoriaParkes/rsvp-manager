@@ -71,3 +71,8 @@ If the user chooses to skip to the next question/comment they will be asked to c
 The RSVP Responses worksheet is updated after send an email in response to a question/comment or ignoring a question/comment as shown in the following image:
 
 ![RSVP Responses Worksheet Updates](docs/features/rsvp-responses-updated.png)
+
+# Testing
+## Functionality Testing
+
+[See Functionality Testing Document](docs/testing/functionality-testing.md)
