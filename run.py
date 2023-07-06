@@ -35,10 +35,10 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 try:
     SHEET = GSPREAD_CLIENT.open('RSVP_Responses').worksheet('Responses')
 except Exception:
-    print('Sorry, the RSVP worksheet cannot be loaded.')
-    input('Press the Enter key to exit the program.')
-    print('\033[3A')
-    sys.exit('Goodbye                                            ')
+    print('Sorry, the RSVP worksheet cannot be loaded.\n')
+    input('Press the Enter key to exit the program.\n')
+    print('\033c')
+    sys.exit('Goodbye')
 
 
 def clear():
@@ -164,7 +164,7 @@ def analysis():
     question_responses(4)
     calc_attendance_number()
     question_responses(6)
-    input('\nPress the Enter key to return to the main menu.')
+    input('\nPress the Enter key to return to the main menu.\n')
     transition_between_screens('Returning to main menu...')
     main_menu()
 
@@ -253,7 +253,7 @@ def compose_email_message(row_data, name, email_address):
             print('Confirm if this message is complete to send email.')
             while True:
                 confirm = input('Enter Y or N and press '
-                                'the Enter key to continue:').strip().lower()
+                                'the Enter key to continue:\n').strip().lower()
                 if confirm == 'y':
                     break_flag = True
                     break
@@ -265,8 +265,8 @@ def compose_email_message(row_data, name, email_address):
                                              input_list)
                     break
                 else:
-                    print('\033[2A')
-                    print('Enter Y for yes or N for no.                 ')
+                    print('\033[3A')
+                    print('Enter Y for yes or N for no.                     ')
             if break_flag:
                 break
         elif user_input == '':
@@ -404,7 +404,7 @@ def email_response(row_data):
     print(f'Sending email to {name} at {email_address}...')
     pause()
     send_email(row_data, name, email_address, message)
-    input('Press the Enter key to continue...')
+    input('Press the Enter key to continue...\n')
     transition_between_screens('Returning to Question/Comment Manager...')
 
 
@@ -422,10 +422,13 @@ def ignore_question(row_data):
         row_data: dict of str -> str: RSVP question -> Answer.
     """
     display_row_data(row_data)
+    print('If you choose to ignore this question it will not be available '
+          'to process later.\n')
     print('Are you sure you want to process this question as "Ignored"?')
     while True:
+        n_input = False
         ignore = input(
-            'Enter Y or N and press the Enter key to continue:'
+            'Enter Y or N and press the Enter key to continue:\n'
         ).strip().lower()
         if ignore == 'y':
             clear()
@@ -439,11 +442,14 @@ def ignore_question(row_data):
         elif ignore == 'n':
             transition_between_screens('Returning to Question/Comment '
                                        'Processing Menu...')
-            question_processing_menu(row_data)
+            n_input = True
+            break
         else:
-            print('\033[2A')
-            print('Enter Y for yes or N for no.                    ')
-        break
+            print('\033[3A')
+            print('Enter Y for yes or N for no.                      ')
+    if n_input:
+        question_processing_menu(row_data)
+
 
 
 def skip_question(row_data):
@@ -464,20 +470,24 @@ def skip_question(row_data):
           'to process later.\n')
     print('Are you sure you want to skip this question for now?')
     while True:
+        n_input = False
         skip = input(
-            'Enter Y or N and press the Enter key to continue:'
+            'Enter Y or N and press the Enter key to continue:\n'
         ).strip().lower()
         if skip == 'y':
             transition_between_screens('Question/comment skipped, returning '
                                        'to Question/Comment Manager…')
+            break
         elif skip == 'n':
             transition_between_screens('Returning to Question/Comment '
                                        'Processing Menu…')
-            question_processing_menu(row_data)
+            n_input = True
+            break
         else:
-            print('\033[2A')
-            print('Enter Y for yes or N for no.                    ')
-        break
+            print('\033[3A')
+            print('Enter Y for yes or N for no.                       ')
+    if n_input:
+        question_processing_menu(row_data)
 
 
 def display_row_data(row):
@@ -578,12 +588,12 @@ def view_questions(data):
             question_processing_menu(row)
         print('No more questions.')
         print('You have reached the end of the list.')
-        input('Press the Enter key to return to the main menu.')
+        input('Press the Enter key to return to the main menu.\n')
         transition_between_screens('Returning to main menu...')
         main_menu()
     else:
         print('There are currently no questions/comments to review.')
-        input('Press the Enter key to return to the main menu.')
+        input('Press the Enter key to return to the main menu.\n')
         transition_between_screens('Returning to main menu...')
         main_menu()
 
