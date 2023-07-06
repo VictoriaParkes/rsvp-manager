@@ -1,32 +1,27 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# RSVP Manager
 
-Welcome,
+The RSVP Response Manager is a command line application to view statistics relating to answers given by people who submitted an RSVP form, and process questions/comments received through this RSVP form. It is intended to be used by staff of organisations that hold public events.
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **March 14, 2023**
+The statistical analysis would be useful in answering question such as:
+- How many people are expected to attend the event?
+- How successful was the marketing of the event?
+- What is the value of each employed marketing strategy?
 
-## Reminders
+The question/comment manager functionality is designed to provide means of responding to respondent's questions/comments via email. This feature provides a means of starting back and forth communication with individual respondents.
 
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
+The RSVP response data is stored in an external Google Spreadsheet.
 
-## Creating the Heroku app
+# User Experience (UX)
+## User Stories
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
+As a user I would like:
+- To be able to view statistical analysis of the data collected.
+- To be able to manage questions/comments received from respondents.
+- To be able to respond to questions/comments received from respondents.
+- To be able to update the worksheet storing the data with details about the actions taken to process the received questions/comments.
 
-1. `heroku/python`
-2. `heroku/nodejs`
-
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
-
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
-
-Connect your GitHub repository and deploy as normal.
-
-## Constraints
-
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
-
----
-
-Happy coding!
+As a business owner I would like:
+- To streamline the processes of analysing and processing data collected.
+- To provide a means of quickly and efficiently determining the value of employed marketing strategies used by the business.
+- To provide a way of communicating with respondents who have asked a question or left a comment on the RSVP response form.
+- To have a record of actions taken by employees to process questions/comments.
