@@ -442,7 +442,6 @@ def ignore_question(row_data):
         question_processing_menu(row_data)
 
 
-
 def skip_question(row_data):
     """Asks the user for confirmation that they want to skip to the next
     question/comment until they enter a valid input.
