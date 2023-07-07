@@ -1,22 +1,13 @@
-# API to open, read and modify RSVP_Responses spreadsheet
 import gspread
-# For authorisation for app access to gspread API
 from google.oauth2.service_account import Credentials
-# For access to the exit() function
 import sys
-# For access to the islice() function
 import itertools
-# API to send emails
 from sendgrid import SendGridAPIClient
-# To define to/from email addresses, subject and message for sending email
 from sendgrid.helpers.mail import Mail
-# For access to classes for manipulating dates and times
 import datetime
-# For access to the sleep() function
 import time
-# To get variables from environment
 import os
-# To load .env file in IDE
+
 if not os.environ.get("DEPLOYED"):
     from dotenv import load_dotenv
     load_dotenv('.env')
