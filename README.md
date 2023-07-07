@@ -19,6 +19,7 @@ The RSVP response data is stored in an external Google Spreadsheet.
 2. [Design](#2-design)
 3. [Features](#3-features)
     - [Current Features](#current-features)
+    - [Future Features](#future-features)
 4. [Technologies Used](#4-technologies-used)
 5. [Testing](#5-testing)
     - [Fuctionality Testing](#functionality-testing)
@@ -99,6 +100,10 @@ If the user chooses to skip to the next question/comment they will be asked to c
 The RSVP Responses worksheet is updated after send an email in response to a question/comment or ignoring a question/comment as shown in the following image:
 
 ![RSVP Responses Worksheet Updates](docs/features/rsvp-responses-updated.png)
+
+## Future Features
+
+- Capability to categorise questions/comments received for purposes of performing statistical analysis.
 
 # 4. Technologies Used
 [Python 3.8](https://www.python.org/)
