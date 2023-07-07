@@ -22,6 +22,7 @@ The RSVP response data is stored in an external Google Spreadsheet.
 4. [Technologies Used](#4-technologies-used)
 5. [Testing](#5-testing)
     - [Fuctionality Testing](#functionality-testing)
+    - [Browser Compatibility](#browser-compatibility)
     - [Bugs Encountered](#bugs-encountered)
         - [Fixed](#fixed)
 6. [Local Development and Deployment](#6-local-development-and-deployment)
@@ -146,6 +147,10 @@ The RSVP Responses worksheet is updated after send an email in response to a que
 ## Functionality Testing
 
 [See Functionality Testing Document](docs/testing/functionality-testing.md)
+
+## Browser Compatibility
+
+The website was tested for functionality on different browsers (Chrome, Firefox and Edge) and found to be fully functional on them all.
 
 ## Bugs Encountered
 ### Fixed
