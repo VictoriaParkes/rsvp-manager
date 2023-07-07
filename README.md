@@ -11,7 +11,32 @@ The question/comment manager functionality is designed to provide means of respo
 
 The RSVP response data is stored in an external Google Spreadsheet.
 
-# User Experience (UX)
+# Contents
+1. [User Experience (UX)](#1-user-experience-ux)
+    - [User Stories](#user-stories)
+2. [Design](#2-design)
+3. [Features](#3-features)
+    - [Current Features](#current-features)
+4. [Technologies Used](#4-technologies-used)
+5. [Testing](#5-testing)
+    - [Fuctionality Testing](#functionality-testing)
+    - [Bugs Encountered](#bugs-encountered)
+        - [Fixed](#fixed)
+6. [Local Development and Deployment](#6-local-development-and-deployment)
+    - [Local Development](#local-development)
+        - [Forking the Repository](#forking-the-repository)
+        - [Cloning Your Forked Repository](#cloning-your-forked-repository)
+    - [How to Create and Configure the Google Spreadsheet and APIs](#how-to-create-and-configure-the-google-spreadsheet-and-apis)
+        - [Create Google Spreadsheet](#create-google-spreadsheet)
+        - [Enable Google Sheets API](#enable-google-sheets-api)
+        - [Set up SendGrid API](#set-up-sendgrid-api)
+    - [Setting Up Your Workspace](#setting-up-your-workspace)
+    - [Deploying the project to Heroku](#deploying-the-project-to-heroku)
+7. [Credits](#7-credits)
+    - [Code](#code)
+    - [Acknowledgements](#acknowledgements)
+
+# 1. User Experience (UX)
 ## User Stories
 
 As a user I would like:
@@ -26,11 +51,11 @@ As a business owner I would like:
 - To provide a way of communicating with respondents who have asked a question or left a comment on the RSVP response form.
 - To have a record of actions taken by employees to process questions/comments.
 
-# Design
+# 2. Design
 
 ![Flowchart](docs/design-flowchart.png)
 
-# Features
+# 3. Features
 ## Current Features
 ### Main Menu
 The program starts by welcoming the user and displaying the main menu. From here the user can choose to view the statistical analysis of the data stored in the RSVP Responses spreadsheet, process questions/comments received or exit the program. This feature is designed to help the user easily navigate through the program.
@@ -72,7 +97,7 @@ The RSVP Responses worksheet is updated after send an email in response to a que
 
 ![RSVP Responses Worksheet Updates](docs/features/rsvp-responses-updated.png)
 
-# Technologies Used
+# 4. Technologies Used
 [Python 3.8](https://www.python.org/)
 
 [Lucidchart](https://www.lucidchart.com/pages) - used to create the flowcharts outlining the functionality of the project.
@@ -115,7 +140,7 @@ The RSVP Responses worksheet is updated after send an email in response to a que
 
 [Heroku](https://www.heroku.com/) - to deploy the application.
 
-# Testing
+# 5. Testing
 ## Functionality Testing
 
 [See Functionality Testing Document](docs/testing/functionality-testing.md)
@@ -240,7 +265,7 @@ For more details about forking and cloning a repository, please refer to [GitHub
 		- Your API key will be displayed on screen.
         - Make sure you copy the API key and save it somewhere safe as it will not be shown to you again after you leave the page.
 
-### Setting Up Your Workspace
+## Setting Up Your Workspace
 - Create a credentials file.
 
 	- Locate the json file that was created when setting up Google Drive API.
@@ -263,7 +288,7 @@ For more details about forking and cloning a repository, please refer to [GitHub
 
 - Commit your changes with an appropriate commit message and push to GitHub.
 
-### Deploying the project to Heroku
+## Deploying the project to Heroku
 - The requirements.txt file in the project was updated to include details on the project dependencies. Steps to do this are :
 	- Enter the following command at the terminal prompt : "pip3 freeze > requirements.txt"
 	- Commit changes to requirements.txt and push to GitHub.
