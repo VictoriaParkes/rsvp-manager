@@ -93,15 +93,15 @@ The RSVP Responses worksheet is updated after send an email in response to a que
 
 [gspread](https://docs.gspread.org/en/latest/) - required to access and update RSVP_Responses spreadsheet through Google Sheets API.
 
-[sys](https://docs.python.org/3.8/library/sys.html) - to use the `exit()` function to close the program.
+[sys](https://docs.python.org/3.8/library/sys.html) - to use the `exit()` method to close the program.
 
-[itertools](https://docs.python.org/3.8/library/itertools.html) - to use the `islice()` function to remove dictionary items.
+[itertools](https://docs.python.org/3.8/library/itertools.html) - to use the `islice()` method to remove dictionary items.
 
 [sendgrid.helpers.mail](https://docs.sendgrid.com/for-developers/sending-email/quickstart-python#install-the-helper-library) - To define to/from email addresses, subject and message for sending emails using SendGrid.
 
 [datetime](https://docs.python.org/3.8/library/datetime.html) - to access classes for manipulating dates and times.
 
-[time](https://docs.python.org/3.8/library/time.html) - to use the `sleep()` function to pause the program.
+[time](https://docs.python.org/3.8/library/time.html) - to use the `sleep()` method to pause the program.
 
 [os](https://docs.python.org/3.8/library/os.html) - To get variables from environment.
 
@@ -289,3 +289,31 @@ For more details about forking and cloning a repository, please refer to [GitHub
 - Scroll down the page and choose to either Automatically Deploy each time changes are pushed to GitHub, or Manually deploy.
 - The application can be run from the Application Configuration page by clicking on the Open App button.
 
+# 7. Credits
+## Code
+[W3 Schools](https://www.w3schools.com/) and lessons from [Code Institute's Full Stack Developer Course](https://codeinstitute.net/full-stack-software-development-diploma/) were frequently referred to in the development of this website.
+
+- To valiadate numerical inputs code from [Code Institute's](https://codeinstitute.net/full-stack-software-development-diploma/) Love Sandwiches walkthrough project was used and modified.
+- Making a list of dictionaries containing the row values of responses which contain a question/comment that had not yet been ignored or responded to was done using [Python | Removing dictionary from list of dictionaries](https://www.geeksforgeeks.org/python-removing-dictionary-from-list-of-dictionaries/) from GeeksforGeeks.
+- `islice()` was utilised to remove unwanted dictionary items using [How to Slice a Dictionary in Python, With Examples](https://www.linuxscrew.com/python-dictionary-slice) from LinuxScrew.
+- The functionality to send emails through SendGrid was achieved using the following sources:
+    - [Send Mail Using Python (SendGrid)](https://youtu.be/1KgmOnxe5FM) from Easy Coder.
+    - SendGrid's Python integration guide [How to send email using Python](https://app.sendgrid.com/guide/integrate/langs/python).
+- The email functionality on Heroku bug was fixed using the following sources:
+    - ["Avoid THIS Bad Practise In Python": An Introduction to .env Files](https://youtu.be/c42T5wKSztQ) from Indently.
+    - [How to use dotenv package to load environment variables in Python](https://www.python-engineer.com/posts/dotenv-python/) by Pratik Choudhari on www.python-engineer.com.
+    - [Environment Variables in Heroku - Python](https://dev.to/vulcanwm/environment-variables-in-heroku-python-385o) from dev.to.
+- The `.join()` method was utilised to join message composer inputs into a string using [Python String join() Method](https://www.w3schools.com/python/ref_string_join.asp) from [W3 Schools](https://www.w3schools.com/).
+- Moving the cursor up in the console was done using [How do I move the terminal cursor up](https://stackoverflow.com/questions/72667299/how-do-i-move-the-terminal-cursor-up) on stackoverflow.com.
+- Converting date format to update worksheet after sending email was achieved using [How to Convert a String to Datetime in Python?](https://codesolid.com/how-to-convert-a-string-to-datetime-in-python/) from codesolid.com.
+- The `clear()` function to clear the screen was taken from [Clear terminal in Python](https://stackoverflow.com/questions/2084508/clear-terminal-in-python) on stackoverflow.com.
+- The `pause()` function to pause the program was taken from [Correct way to pause a Python program](https://stackoverflow.com/questions/11552320/correct-way-to-pause-a-python-program) on stackoverflow.com.
+- The `update_cell()` method was utilised using [gspread Documentation](https://buildmedia.readthedocs.org/media/pdf/gspread/latest/gspread.pdf).
+- The message composer input system was made using [Multiple lines user Input in Python](https://bobbyhadz.com/blog/python-input-multiple-lines) by Borislav Hadzhiev on bobbyhadz.com.
+- To break out of nested loops the following resource was used [5 Ways To Break Out of Nested Loops in Python](https://medium.com/techtofreedom/5-ways-to-break-out-of-nested-loops-in-python-4c505d34ace7) by Yang Zhou on medium.com.
+- The `sys.exit()` method was utilised using [Python documentation](https://docs.python.org/3.8/library/sys.html#sys.exit).
+- `if __name__ == '__main__':` was utilised using [What does the if __name__ == “__main__”: do?](https://www.geeksforgeeks.org/what-does-the-if-__name__-__main__-do/) and help from my mentor Brian Macharia.
+- The try-except code to raise an error if the RSVP worksheet cannot be loaded was written using [How to check whether a file exists in Python](https://youtu.be/V6IX3k8PDBc) from mCoding and help from my mentor Brian Macharia.
+
+## Acknowledgements
+I would like to thank Brian Macharia, my Code Institute mentor, for his helpful feedback and advice.
