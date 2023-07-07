@@ -105,7 +105,7 @@ The RSVP Responses worksheet is updated after send an email in response to a que
 
 [os](https://docs.python.org/3.8/library/os.html) - To get variables from environment.
 
-[Python-dotenv](https://pypi.org/project/python-dotenv/) - To load `.env` file containing variables required to use sendgrid.
+[Python-dotenv](https://pypi.org/project/python-dotenv/) - To load `.env` file containing variables required to use SendGrid.
 
 [Code Institute's Python Essentials Template](https://github.com/Code-Institute-Org/p3-template) - To provide front-end files to create a mock terminal in which to use this project.
 
@@ -120,65 +120,86 @@ The RSVP Responses worksheet is updated after send an email in response to a que
 
 [See Functionality Testing Document](docs/testing/functionality-testing.md)
 
+## Bugs Encountered
+### Fixed
+
+1. During development I found that if I began question/comment processing and then returned to main menu to view the data analysis, the question/comment manager would continue its loop immediately after displaying the data analysis. This was fixed by adding an input asking the user to press the Enter key to return to the main menu and calling `main_menu()`.
+2. When deployed to Heroku I found the send email functionality was not working. To enable this functionality on Heroku I added the SendGrid API key and email address to send emails from as config vars. To enable email functionality in development I replaced the `config.ini` file containing the SendGrid API key and email address to send emails from with a `.env` file containing these details. I also added a config var of `DEPLOYED = True` to Heroku and the following code:
+    ```python
+    if not os.environ.get("DEPLOYED"):
+        from dotenv import load_dotenv
+        load_dotenv('.env')
+    ```
+
+    This meant getting the variables using `os.environ[]` would work in both Heroku and the development environment.
+3. The Y/N input loops in the ignore and skip functions would continue for as many times as the input N was given before a input of Y was given. This was fixed by adding `n_input = False` to the beginning of the loop, a break keyword to the `if input == 'y'`, a break keyword and `n_input = True` to the `if input == 'n'`, and adding the following code after the loop:
+    ```python
+    if n_input:
+        question_processing_menu(row_data)
+    ```
+
 # 6. Local Development and Deployment
 
 ## Local Development
 ### Forking the Repository
-1. Log in to GitHub.
-2. Go to the repository for this project (https://github.com/VictoriaParkes/rsvp-manager).
-3. In the top-right corner of the page, click "Fork".
-4. Under "Owner", select an owner for the repository from the dropdown menu.
-5. Optionally, in the "Description" field, type a description of your fork.
-6. To copy the main branch only, select the "Copy the main branch only" check box. If you do not select this option, all branches will be copied into the new fork.
-7. Click "Create fork"
+
+- Log in to GitHub.
+- Go to the repository for this project (https://github.com/VictoriaParkes/rsvp-manager).
+- In the top-right corner of the page, click "Fork".
+- Under "Owner", select an owner for the repository from the dropdown menu.
+- Optionally, in the "Description" field, type a description of your fork.
+- To copy the main branch only, select the "Copy the main branch only" check box. If you do not select this option, all branches will be copied into the new fork.
+- Click "Create fork"
 
 ### Cloning Your Forked Repository
-1. Log-in to GitHub.com, navigate to your fork of the repository.
-2. Above the list of files, click Code.
-3. Copy the URL for the repository.
+
+- Log-in to GitHub.com, navigate to your fork of the repository.
+- Above the list of files, click Code.
+- Copy the URL for the repository.
     - To clone the repository using HTTPS, under "Clone with HTTPS", click the "Copy" icon.
     - To clone the repository using an SSH key, including a certificate issued by your organization's SSH certificate authority, click SSH, then click the "Copy" icon.
     - To clone a repository using GitHub CLI, click Use GitHub CLI, then click the "Copy" icon.
-4. Open Git Bash
-5. Change the current working directory to the location where you want the cloned directory.
-6. Type git clone, and then paste the URL you copied earlier.
-7. Press Enter. Your local clone will be created.
+- Open Git Bash
+- Change the current working directory to the location where you want the cloned directory.
+- Type git clone, and then paste the URL you copied earlier.
+- Press Enter. Your local clone will be created.
 
 For more details about forking and cloning a repository, please refer to [GitHub documentation](https://docs.github.com/en/get-started/quickstart/fork-a-repo).
 
-## How to create and configure the Google spreadsheet and APIs
-### Create Google spreadsheet
-- Create and log into a Google account. 
-- Follow this link to the RSVP Responses Google spreadsheet: [RSVP Responses Google spreadsheet](https://docs.google.com/spreadsheets/d/1Hl8TFfDs7YxgQEwGxWAin5Mbpe8_pc0U-kdVxujAWus/edit?usp=sharing)
+## How to Create and Configure the Google Spreadsheet and APIs
+### Create Google Spreadsheet
+
+- Create and log into a Google account.
+- Follow this link to the RSVP Responses Google Spreadsheet: [RSVP Responses Google Spreadsheet](https://docs.google.com/spreadsheets/d/1Hl8TFfDs7YxgQEwGxWAin5Mbpe8_pc0U-kdVxujAWus/edit?usp=sharing)
 - Select file and make a copy of the spreadsheet and name it "RSVP_Responses".
 - You now have a copy of the RSVP Responses spreadsheet that you can edit and use for this project.
 - You can change the respondent email addresses to the email address of an account you have access to if you would like to view the emails sent in this project.
 
-### Enable google sheets API
+### Enable Google Sheets API
 - Follow this link to the Google Cloud Platform: [Google Cloud Platform](https://console.cloud.google.com/)
 - Click on the "Select a project" button then select "NEW PROJECT".
 - Give your project a name.
 - Click "Select Project" to go to your project page.
 - Select "APIs and services" from the side menu, and then select “Library”.
-- Search for and select Google drive API.
-- Enable Google drive API, this will take you to the API overview page.
+- Search for and select Google Drive API.
+- Enable Google Drive API, this will take you to the API overview page.
 - To create your credentials click "CREATE CREDENTIALS".
 - Fill out the form with the following details:
 
-    1. From the "Which API are you using?" dropdown menu, choose Google Drive API.
-	2. For the "What data will you be accessing?" question, select Application Data.
-	3. For the "Are you planning to use this API with Compute Engine, Kubernetes Engine, App Engine, or Cloud Functions?" question, select "No, I'm not using them".
-	4. Click Next.
-	5. Enter a Service Account name.
-	6. Click Create.
-	7. In the Role Dropdown box choose Basic > Editor.
-	8. Click Continue.
-	9. The Grant users access to this service account options can be left blank.
-	10. Click Done.
-	11. On the next page, click on the Service Account that has been created.
-	12. On the next page, click on the Keys tab.
-	13. Click on the Add Key dropdown and select Create New Key.
-	14. Select JSON and then click Create. This will trigger a `.json` file with your API credentials in it to download to your machine.
+    - From the "Which API are you using?" dropdown menu, choose Google Drive API.
+	- For the "What data will you be accessing?" question, select Application Data.
+	- For the "Are you planning to use this API with Compute Engine, Kubernetes Engine, App Engine, or Cloud Functions?" question, select "No, I'm not using them".
+	- Click Next.
+	- Enter a Service Account name.
+	- Click Create.
+	- In the Role Dropdown box choose Basic > Editor.
+	- Click Continue.
+	- The Grant users access to this service account options can be left blank.
+	- Click Done.
+	- On the next page, click on the Service Account that has been created.
+	- On the next page, click on the Keys tab.
+	- Click on the Add Key dropdown and select Create New Key.
+	- Select JSON and then click Create. This will trigger a `.json` file with your API credentials in it to download to your machine.
 
 - Select Library from the side menu.
 - Search for and select Google Sheets API.
@@ -187,7 +208,9 @@ For more details about forking and cloning a repository, please refer to [GitHub
 ### Set up SendGrid API
 - Follow this link to the SendGrid website and create an account: [SendGrid](https://sendgrid.com/)
 - In order to use SendGrid to send email you will need to complete the following steps:
+
 	- Set up two-factor authentication:
+
 		- From the side menu select "Two-Factor Authentication".
 		- Click the "Add Two-Factor Authentication" button.
 		- Choose your preferred authentication method, the Authy app or txt message.
@@ -195,7 +218,9 @@ For more details about forking and cloning a repository, please refer to [GitHub
 		- If you chose to use the Authy app to authenticate you will need to access this app on your phone.
 		- Enter the 7 digit code sent to your phone and click save.
 		- Now when you login to SendGrid you will be asked to enter a 7 digit code that will be sent to your phone to authenticate your identity.
+
 	- Complete sender authentication:
+
 		- From the side menu select "Sender Authentication".
 		- This step can be completed by clicking "Verify a Single Sender".
 		- Enter the name you want to be shown to the recipient.
@@ -205,7 +230,9 @@ For more details about forking and cloning a repository, please refer to [GitHub
 		- Enter your city.
 		- Select your country from the drop down.
 		- Enter a nickname for your reference.
+
 	- Create an API key:
+
 		- From the side menu select "API Keys"
 		- Click the "Create an API Key" button.
 		- Enter an API key name.
@@ -215,12 +242,15 @@ For more details about forking and cloning a repository, please refer to [GitHub
 
 ### Setting Up Your Workspace
 - Create a credentials file.
+
 	- Locate the json file that was created when setting up Google Drive API.
 	- Drag and drop this file into your workspace and rename it to `creds.json`.
 	- Open the `creds.json` file and find the `client_email` value.
-	- Copy the email address without the quotes around it and navigate to your Google spreadsheet.
+	- Copy the email address without the quotes around it and navigate to your Google Spreadsheet.
 	- Click the "Share" button and paste in the client email, make sure “Editor” is selected, untick “Notify People”, and then click "share".
+    
 - Create a `.env` file
+
 	- Create a new file in your workspace and name it `.env`.
 	- Add the following on separate line:
 	    - RSVP_EMAIL = the email address you want to send messages from
@@ -230,6 +260,7 @@ For more details about forking and cloning a repository, please refer to [GitHub
 		- Install gspread and google-auth libraries in the development environment using the command "pip3 install gspread google-auth".
 		- Install SendGrid in the development environment using the command "pip3 install sendgrid".
 		- Install python-dotenv in the development environment using the command "pip3 install python-dotenv".
+
 - Commit your changes with an appropriate commit message and push to GitHub.
 
 ### Deploying the project to Heroku
@@ -257,3 +288,4 @@ For more details about forking and cloning a repository, please refer to [GitHub
 - Click the "Connect" button to link your GitHub repository with your Heroku app.
 - Scroll down the page and choose to either Automatically Deploy each time changes are pushed to GitHub, or Manually deploy.
 - The application can be run from the Application Configuration page by clicking on the Open App button.
+
