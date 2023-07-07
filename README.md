@@ -34,9 +34,9 @@ The RSVP response data is stored in an external Google Spreadsheet.
     - [How to Create and Configure the Google Spreadsheet and APIs](#how-to-create-and-configure-the-google-spreadsheet-and-apis)
         - [Create Google Spreadsheet](#create-google-spreadsheet)
         - [Enable Google Sheets API](#enable-google-sheets-api)
-        - [Set up SendGrid API](#set-up-sendgrid-api)
+        - [Set Up SendGrid API](#set-up-sendgrid-api)
     - [Setting Up Your Workspace](#setting-up-your-workspace)
-    - [Deploying the project to Heroku](#deploying-the-project-to-heroku)
+    - [Deploying the Project to Heroku](#deploying-the-project-to-heroku)
 7. [Credits](#7-credits)
     - [Code](#code)
     - [Acknowledgements](#acknowledgements)
@@ -91,10 +91,10 @@ The user is asked to review their and confirm the message is complete to send it
 
 ![Confirm Message](docs/features/confirm-message.png)
 
-### Mark the question/comment as ignored
+### Mark the Question/Comment as Ignored
 If the user chooses to mark the question/comment as ignored they will be asked to confirm that they wish to ignore the question/comment. If the user confirms they wish to mark the question as ignored the RSVP responses worksheet will be updated with the value "Ignored" in the "Responded/ignored" column and the program will return to the question/comment manager to process the next question/comment. If they choose not to ignore the question/comment the program will return to the question/comment processing menu to choose another action for processing the current question/comment. This feature helps to ensure questions/comments are not ignored by mistake.
 
-### Skip to the next question/comment
+### Skip to the Next Question/Comment
 If the user chooses to skip to the next question/comment they will be asked to confirm they wish to skip the question/comment. If the user confirms the wish to skip the question/comment the program will return to the question/comment manager to process the next question/comment. If they choose not to skip the question/comment the program will return to the question/comment processing menu to choose another action for processing the current question/comment. This feature helps to ensure questions/comments are not skipped by mistake.
 
 ### RSVP Responses Worksheet Updates
@@ -249,7 +249,7 @@ For more details about forking and cloning a repository, please refer to [GitHub
 - Search for and select Google Sheets API.
 - Enable Google Sheets API, no credentials need to be created.
 
-### Set up SendGrid API
+### Set Up SendGrid API
 - Follow this link to the SendGrid website and create an account: [SendGrid](https://sendgrid.com/)
 - In order to use SendGrid to send email you will need to complete the following steps:
 
@@ -307,7 +307,7 @@ For more details about forking and cloning a repository, please refer to [GitHub
 
 - Commit your changes with an appropriate commit message and push to GitHub.
 
-## Deploying the project to Heroku
+## Deploying the Project to Heroku
 - The requirements.txt file in the project was updated to include details on the project dependencies. Steps to do this are :
 	- Enter the following command at the terminal prompt : "pip3 freeze > requirements.txt"
 	- Commit changes to requirements.txt and push to GitHub.
