@@ -11,6 +11,8 @@ The question/comment manager functionality is designed to provide means of respo
 
 The RSVP response data is stored in an external Google Spreadsheet.
 
+[The deployed app can be found here](https://rsvp-manager-e192544d2e6b.herokuapp.com/)
+
 # Contents
 1. [User Experience (UX)](#1-user-experience-ux)
     - [User Stories](#user-stories)
