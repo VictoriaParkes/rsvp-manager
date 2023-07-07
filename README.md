@@ -119,3 +119,141 @@ The RSVP Responses worksheet is updated after send an email in response to a que
 ## Functionality Testing
 
 [See Functionality Testing Document](docs/testing/functionality-testing.md)
+
+# 6. Local Development and Deployment
+
+## Local Development
+### Forking the Repository
+1. Log in to GitHub.
+2. Go to the repository for this project (https://github.com/VictoriaParkes/rsvp-manager).
+3. In the top-right corner of the page, click "Fork".
+4. Under "Owner", select an owner for the repository from the dropdown menu.
+5. Optionally, in the "Description" field, type a description of your fork.
+6. To copy the main branch only, select the "Copy the main branch only" check box. If you do not select this option, all branches will be copied into the new fork.
+7. Click "Create fork"
+
+### Cloning Your Forked Repository
+1. Log-in to GitHub.com, navigate to your fork of the repository.
+2. Above the list of files, click Code.
+3. Copy the URL for the repository.
+    - To clone the repository using HTTPS, under "Clone with HTTPS", click the "Copy" icon.
+    - To clone the repository using an SSH key, including a certificate issued by your organization's SSH certificate authority, click SSH, then click the "Copy" icon.
+    - To clone a repository using GitHub CLI, click Use GitHub CLI, then click the "Copy" icon.
+4. Open Git Bash
+5. Change the current working directory to the location where you want the cloned directory.
+6. Type git clone, and then paste the URL you copied earlier.
+7. Press Enter. Your local clone will be created.
+
+For more details about forking and cloning a repository, please refer to [GitHub documentation](https://docs.github.com/en/get-started/quickstart/fork-a-repo).
+
+## How to create and configure the Google spreadsheet and APIs
+### Create Google spreadsheet
+- Create and log into a Google account. 
+- Follow this link to the RSVP Responses Google spreadsheet: [RSVP Responses Google spreadsheet](https://docs.google.com/spreadsheets/d/1Hl8TFfDs7YxgQEwGxWAin5Mbpe8_pc0U-kdVxujAWus/edit?usp=sharing)
+- Select file and make a copy of the spreadsheet and name it "RSVP_Responses".
+- You now have a copy of the RSVP Responses spreadsheet that you can edit and use for this project.
+- You can change the respondent email addresses to the email address of an account you have access to if you would like to view the emails sent in this project.
+
+### Enable google sheets API
+- Follow this link to the Google Cloud Platform: [Google Cloud Platform](https://console.cloud.google.com/)
+- Click on the "Select a project" button then select "NEW PROJECT".
+- Give your project a name.
+- Click "Select Project" to go to your project page.
+- Select "APIs and services" from the side menu, and then select “Library”.
+- Search for and select Google drive API.
+- Enable Google drive API, this will take you to the API overview page.
+- To create your credentials click "CREATE CREDENTIALS".
+- Fill out the form with the following details:
+
+    1. From the "Which API are you using?" dropdown menu, choose Google Drive API.
+	2. For the "What data will you be accessing?" question, select Application Data.
+	3. For the "Are you planning to use this API with Compute Engine, Kubernetes Engine, App Engine, or Cloud Functions?" question, select "No, I'm not using them".
+	4. Click Next.
+	5. Enter a Service Account name.
+	6. Click Create.
+	7. In the Role Dropdown box choose Basic > Editor.
+	8. Click Continue.
+	9. The Grant users access to this service account options can be left blank.
+	10. Click Done.
+	11. On the next page, click on the Service Account that has been created.
+	12. On the next page, click on the Keys tab.
+	13. Click on the Add Key dropdown and select Create New Key.
+	14. Select JSON and then click Create. This will trigger a `.json` file with your API credentials in it to download to your machine.
+
+- Select Library from the side menu.
+- Search for and select Google Sheets API.
+- Enable Google Sheets API, no credentials need to be created.
+
+### Set up SendGrid API
+- Follow this link to the SendGrid website and create an account: [SendGrid](https://sendgrid.com/)
+- In order to use SendGrid to send email you will need to complete the following steps:
+	- Set up two-factor authentication:
+		- From the side menu select "Two-Factor Authentication".
+		- Click the "Add Two-Factor Authentication" button.
+		- Choose your preferred authentication method, the Authy app or txt message.
+		- Enter your country code and phone number.
+		- If you chose to use the Authy app to authenticate you will need to access this app on your phone.
+		- Enter the 7 digit code sent to your phone and click save.
+		- Now when you login to SendGrid you will be asked to enter a 7 digit code that will be sent to your phone to authenticate your identity.
+	- Complete sender authentication:
+		- From the side menu select "Sender Authentication".
+		- This step can be completed by clicking "Verify a Single Sender".
+		- Enter the name you want to be shown to the recipient.
+		- Enter the email address you want to send emails from.
+		- Enter the email you want recipients to reply to.
+		- You can enter n/a as the company address.
+		- Enter your city.
+		- Select your country from the drop down.
+		- Enter a nickname for your reference.
+	- Create an API key:
+		- From the side menu select "API Keys"
+		- Click the "Create an API Key" button.
+		- Enter an API key name.
+		- For this project you can select "Restricted Access" and choose full access for "Mail Send" only.
+		- Your API key will be displayed on screen.
+        - Make sure you copy the API key and save it somewhere safe as it will not be shown to you again after you leave the page.
+
+### Setting Up Your Workspace
+- Create a credentials file.
+	- Locate the json file that was created when setting up Google Drive API.
+	- Drag and drop this file into your workspace and rename it to `creds.json`.
+	- Open the `creds.json` file and find the `client_email` value.
+	- Copy the email address without the quotes around it and navigate to your Google spreadsheet.
+	- Click the "Share" button and paste in the client email, make sure “Editor” is selected, untick “Notify People”, and then click "share".
+- Create a `.env` file
+	- Create a new file in your workspace and name it `.env`.
+	- Add the following on separate line:
+	    - RSVP_EMAIL = the email address you want to send messages from
+		- SENDGRID_APIKEY = the API key generated by SendGrid
+	- Make sure that both the `creds.json` and `.env` files are listed in the `.gitignore` file to prevent them being sent to GitHub, this should already be the case.
+	- Installing additional required packages:
+		- Install gspread and google-auth libraries in the development environment using the command "pip3 install gspread google-auth".
+		- Install SendGrid in the development environment using the command "pip3 install sendgrid".
+		- Install python-dotenv in the development environment using the command "pip3 install python-dotenv".
+- Commit your changes with an appropriate commit message and push to GitHub.
+
+### Deploying the project to Heroku
+- The requirements.txt file in the project was updated to include details on the project dependencies. Steps to do this are :
+	- Enter the following command at the terminal prompt : "pip3 freeze > requirements.txt"
+	- Commit changes to requirements.txt and push to GitHub.
+- Log in to Heroku, create an account if necessary.
+- From the Heroku dashboard, click "Create new app". For a new account a button will be displayed on screen, if you already have one or more apps created a link to this function is located in the "New" dropdown menu at the top right of the screen.
+- On the Create New App page, enter a unique name for the application and select region. Then click Create app.
+- Select the "settings" tab and click the "Reveal Config Vars" button.
+- Enter the following values into the specified fields and click "Add":
+
+	| KEY | VALUE |
+    |-----|-------|
+	| CREDS | paste the entire contents of the creds.json file into the VALUE field |
+	| DEPLOYED | True |
+	| PORT | 8000 |
+	| RSVP_EMAIL | Enter the email address you want to send emails from |
+	| SENDGRID_APIKEY | Enter the API key generated by SendGrid |
+
+- Next, scroll down the Settings page to "Buildpacks". Click "Add buildpack", select Python from the pop up window and click on "Save changes". Click "Add buildpack" again, select Node.js from the pop up window and click on "Save changes". It is important that the buildpacks are listed Python first, then Node.js beneath.
+- Select the "Deploy" tab.
+- Select GitHub as the Deployment Method and click "Connect to GitHub".
+- Enter the name of your GitHub repository in the search bar and click "Search".
+- Click the "Connect" button to link your GitHub repository with your Heroku app.
+- Scroll down the page and choose to either Automatically Deploy each time changes are pushed to GitHub, or Manually deploy.
+- The application can be run from the Application Configuration page by clicking on the Open App button.
