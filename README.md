@@ -26,6 +26,7 @@ The RSVP response data is stored in an external Google Spreadsheet.
     - [Browser Compatibility](#browser-compatibility)
     - [Bugs Encountered](#bugs-encountered)
         - [Fixed](#fixed)
+        - [Not Fixed](#not-fixed)
 6. [Local Development and Deployment](#6-local-development-and-deployment)
     - [Local Development](#local-development)
         - [Forking the Repository](#forking-the-repository)
@@ -174,6 +175,10 @@ The website was tested for functionality on different browsers (Chrome, Firefox 
     if n_input:
         question_processing_menu(row_data)
     ```
+
+### Not Fixed
+
+1. The time given in the timestamp entered into the worksheet for when an email is sent is 1 hour behind when the email was actually sent.
 
 # 6. Local Development and Deployment
 
