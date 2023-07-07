@@ -149,6 +149,8 @@ The RSVP Responses worksheet is updated after send an email in response to a que
 
 [Heroku](https://www.heroku.com/) - to deploy the application.
 
+[Code Institute Python Linter](https://pep8ci.herokuapp.com/) - used to help format code neatly.
+
 # 5. Testing
 ## Functionality Testing
 
