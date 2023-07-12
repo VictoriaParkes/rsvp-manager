@@ -24,6 +24,7 @@ The RSVP response data is stored in an external Google Spreadsheet.
 5. [Testing](#5-testing)
     - [Fuctionality Testing](#functionality-testing)
     - [Browser Compatibility](#browser-compatibility)
+    - [Python Linter](#python-linter)
     - [Bugs Encountered](#bugs-encountered)
         - [Fixed](#fixed)
         - [Not Fixed](#not-fixed)
@@ -159,6 +160,12 @@ The RSVP Responses worksheet is updated after send an email in response to a que
 ## Browser Compatibility
 
 The website was tested for functionality on different browsers (Chrome, Firefox and Edge) and found to be fully functional on them all.
+
+## Python Linter
+
+The Code Institute Python Linter was used throughout development to validate and format the code neatly. All errors were fixed and no errors were found in the final test.
+
+![CI Python Linter](docs/testing/ci-python-linter.png)
 
 ## Bugs Encountered
 ### Fixed
